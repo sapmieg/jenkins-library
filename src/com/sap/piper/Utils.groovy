@@ -114,8 +114,8 @@ static String fillTemplate(String templateText, Map binding) {
     return result
 }
 
-static String downloadSettingsFromUrl(script, String url, String targetFile = 'settings.xml') {
-    if (script.fileExists(targetFile)) {
+static String downloadSettingsFromUrl(script, String url, String targetFile = 'settings.xml', boolean overwrite = false) {
+    if (script.fileExists(targetFile) && !overwrite) {
         throw new RuntimeException("Trying to download settings file to ${targetFile}, but a file with this name already exists. Please specify a unique file name.")
     }
 

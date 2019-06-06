@@ -68,7 +68,7 @@ void call(Map parameters = [:]) {
         String globalSettingsFile = configuration.globalSettingsFile?.trim()
         if (globalSettingsFile) {
             if (globalSettingsFile.startsWith("http")) {
-                globalSettingsFile = downloadSettingsFromUrl(this, globalSettingsFile, 'global-settings.xml')
+                globalSettingsFile = downloadSettingsFromUrl(this, globalSettingsFile, 'global-settings.xml', true)
             }
             command += " --global-settings '${globalSettingsFile}'"
         }
