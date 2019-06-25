@@ -96,6 +96,7 @@ private void executeStage(script, originalStage, stageName, config, utils) {
         }
 
     } finally {
+        echo "Current build result in stage $stageName is ${script.currentBuild.result}."
         echo "Current build result in stage $stageName is ${script.currentBuild.currentResult}."
         //Perform stashing of selected files in workspace
         utils.stashList(script, script.commonPipelineEnvironment.configuration.stageStashes?.get(stageName)?.stashes ?: [])
