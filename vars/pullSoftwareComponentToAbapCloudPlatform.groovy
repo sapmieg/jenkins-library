@@ -98,13 +98,13 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     // OutputStream outputStream = connection.getOutputStream()
 
     def scriptPull = """#!/bin/bash
-        curl -X POST ${url} \
+        echo curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
-        -d "{ \"sc_name\":\"Z_DEMO_DM\" }"
+        -d '{ \"sc_name\":\"Z_DEMO_DM\" }'
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
