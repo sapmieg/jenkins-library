@@ -72,7 +72,6 @@ void call(Map parameters = [:]) {
     }
 }
 
-@groovy.transform.Field
 public String getXCsrfToken(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
@@ -93,7 +92,7 @@ public String getXCsrfToken(URL url, String authToken) {
 
 }
 
-private Map triggerPull(Map configuration, String url, String authToken) {
+public Map triggerPull(Map configuration, String url, String authToken) {
     
     String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
 
