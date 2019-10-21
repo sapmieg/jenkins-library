@@ -82,7 +82,7 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch' \
         --cookie-jar responseHeader.txt \
-        | awk 'BEGIN {FS=": "}/^Content-Type/{print $2}'
+        | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
