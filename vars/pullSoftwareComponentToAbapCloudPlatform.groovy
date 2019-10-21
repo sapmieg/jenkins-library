@@ -97,17 +97,15 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     // connection.connect()
     // OutputStream outputStream = connection.getOutputStream()
 
-    echo configuration.repositoryName
-
     def scriptPull = """#!/bin/bash
         curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken}' \
-        --cookie cookieJar.txt \
         --data '{ "sc_name": "${configuration.repositoryName}" }'
     """
+        // --cookie cookieJar.txt \
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
     def response = sh (
