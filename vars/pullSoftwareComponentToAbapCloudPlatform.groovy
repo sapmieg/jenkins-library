@@ -126,7 +126,7 @@ public Map triggerPull(Map configuration, String url, String authToken) {
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
-        --data ${input}'
+        --data ${input}
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
