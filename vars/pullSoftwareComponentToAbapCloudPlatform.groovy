@@ -101,10 +101,10 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
-        -H 'Content-Type: application/json' \
+        -H 'Content-Type: application/atom+xml' \
         -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
-        -d "{ \"sc_name\":\"${configuration.repositoryName}\" }"
+        -d "<sc_name>${configuration.repositoryName}</sc_name>"
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
