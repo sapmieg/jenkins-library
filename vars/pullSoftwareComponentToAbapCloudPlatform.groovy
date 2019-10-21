@@ -86,7 +86,9 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
-    def response = sh(script:scriptToken)
+    def response = sh (
+        script : scriptToken,
+        returnStdout: true )
     echo response
 
     HttpURLConnection connection = createDefaultConnection(url, authToken)
