@@ -72,41 +72,19 @@ void call(Map parameters = [:]) {
     }
 }
 
-public String getXCsrfToken(URL url, String authToken) {
-
-    def scriptToken = """#!/bin/bash
-        curl -I -X GET \
-        ${url} \
-        -H 'Authorization: Basic ${authToken}' \
-        -H 'Accept: application/json' \
-        -H 'x-csrf-token: fetch' \
-        --cookie-jar cookieJar.txt \
-        | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
-    """
-    // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
-
-    def response = sh (
-        script : scriptToken,
-        returnStdout: true )
-    return response
-
-}
-
-public Map triggerPull(Map configuration, String url, String authToken) {
+private Map triggerPull(Map configuration, String url, String authToken) {
     
-    def scriptToken = """#!/bin/bash
-        curl -I -X GET \
-        ${url} \
+    def xCsrfTokenScript = """#!/bin/bash
+        curl -I -X GET ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch' \
         --cookie-jar cookieJar.txt \
         | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
     """
-    // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
     def xCsrfToken = sh (
-        script : scriptToken,
+        script : xCsrfTokenScript,
         returnStdout: true )
 
     echo 'x-csrf-token: ' + xCsrfToken
@@ -118,9 +96,11 @@ public Map triggerPull(Map configuration, String url, String authToken) {
     // HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
     // connection.connect()
     // OutputStream outputStream = connection.getOutputStream()
+
+    echo configuration.repositoryName
+
     def scriptPull = """#!/bin/bash
-        curl -X POST \
-        ${url} \
+        curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
