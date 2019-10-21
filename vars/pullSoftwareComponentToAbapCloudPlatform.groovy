@@ -72,7 +72,7 @@ void call(Map parameters = [:]) {
     }
 }
 
-
+@groovy.transform.Field
 public String getXCsrfToken(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
