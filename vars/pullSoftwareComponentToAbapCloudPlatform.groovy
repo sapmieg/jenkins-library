@@ -80,7 +80,8 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
         ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
-        -H 'x-csrf-token: fetch'
+        -H 'x-csrf-token: fetch' \
+        -D @response.json
     """
 
     def response = sh(script:scriptToken)
