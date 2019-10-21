@@ -115,7 +115,7 @@ private HttpURLConnection createPostConnection(URL url, String token, String coo
 
 }
 
-private Map triggerPull(Map configuration, String urlString, String authToken) {
+private Map triggerPull(Map configuration, String url, String authToken) {
     
     String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
 
