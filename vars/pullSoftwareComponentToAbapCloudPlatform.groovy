@@ -93,28 +93,6 @@ private String getXCsrfToken(URL url, String authToken) {
 
 }
 
-private HttpURLConnection createDefaultConnection(URL url, String authToken) {
-
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection()
-    connection.setRequestProperty("Authorization", "Basic " + authToken)
-    connection.setRequestProperty("Content-Type", "application/json")
-    connection.setRequestProperty("Accept", "application/json")
-    return connection
-
-}
-
-private HttpURLConnection createPostConnection(URL url, String token, String cookie, String authToken) {
-
-    HttpURLConnection connection = createDefaultConnection(url, authToken)
-    connection.setRequestProperty("cookie", cookie)
-    connection.setRequestProperty("x-csrf-token", token)
-    connection.setRequestMethod("POST")
-    connection.setDoOutput(true)
-    connection.setDoInput(true)
-    return connection
-
-}
-
 private Map triggerPull(Map configuration, String url, String authToken) {
     
     String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
