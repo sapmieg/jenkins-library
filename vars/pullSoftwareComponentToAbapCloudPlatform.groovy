@@ -76,7 +76,7 @@ void call(Map parameters = [:]) {
 private Map getXCsrfTokenAndCookie(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
-        curl -i HEAD \
+        curl -i -X HEAD \
         ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
