@@ -102,10 +102,10 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
     Map result = [:]
     result.cookie = cookie
     result.token = token
-    return result
-
     echo cookie1
     echo cookie2
+    return result
+
 
 }
 
