@@ -81,7 +81,7 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch' \
-        -D - | grep x-csrf-token > $1
+        | grep x-csrf-token > $1
     """
 
     def response = sh(script:scriptToken)
