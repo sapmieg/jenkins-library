@@ -98,8 +98,6 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     // OutputStream outputStream = connection.getOutputStream()
 
     def scriptPull = """#!/bin/bash
-        repo="${configuration.repositoryName}"
-        echo $repo
         curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
