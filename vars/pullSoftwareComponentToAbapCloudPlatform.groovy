@@ -62,18 +62,18 @@ void call(Map parameters = [:]) {
 
         Map object = triggerPull(configuration, urlString, authToken)
 
-        def pollUrl = new URL(object.d."__metadata"."uri")
-        Map responseObject = pollPullStatus(object, pollUrl, authToken)
+        // def pollUrl = new URL(object.d."__metadata"."uri")
+        // Map responseObject = pollPullStatus(object, pollUrl, authToken)
 
-        echo "[${STEP_NAME}] Pull Status: ${responseObject.d."status_descr"}"
-        if (responseObject.d."status" != 'S') {
-            throw new Exception("Pull Failed")
-        }  
+        // echo "[${STEP_NAME}] Pull Status: ${responseObject.d."status_descr"}"
+        // if (responseObject.d."status" != 'S') {
+        //     throw new Exception("Pull Failed")
+        // }  
     }
 }
 
 
-private Map getXCsrfTokenAndCookie(URL url, String authToken) {
+private String getXCsrfToken(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
         curl -I -X GET \
@@ -81,7 +81,7 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch' \
-        --cookie-jar responseHeader.txt \
+        --cookie-jar cookieJar.txt \
         | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
@@ -89,25 +89,7 @@ private Map getXCsrfTokenAndCookie(URL url, String authToken) {
     def response = sh (
         script : scriptToken,
         returnStdout: true )
-    echo response
-
-    HttpURLConnection connection = createDefaultConnection(url, authToken)
-    connection.setRequestProperty("x-csrf-token", "fetch")
-
-    connection.setRequestMethod("GET")
-    connection.connect()
-    token =  connection.getHeaderField("x-csrf-token")
-    cookie1 = connection.getHeaderField(1).split(";")[0] 
-    cookie2 = connection.getHeaderField(2).split(";")[0] 
-    cookie = cookie1 + "; " + cookie2 
-    connection.disconnect()
-    connection = null
-
-    Map result = [:]
-    result.cookie = cookie
-    result.token = token
-    return result
-
+    return response
 
 }
 
@@ -134,30 +116,48 @@ private HttpURLConnection createPostConnection(URL url, String token, String coo
 }
 
 private Map triggerPull(Map configuration, String urlString, String authToken) {
+    
+    String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
 
     def url = new URL(urlString)
-    Map tokenAndCookie = getXCsrfTokenAndCookie(url, authToken)
-    HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
-    connection.connect()
-    OutputStream outputStream = connection.getOutputStream()
-    String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
-    outputStream.write(input.getBytes())
-    outputStream.flush()
+    String token = getXCsrfToken(url, authToken)
+    // HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
+    // connection.connect()
+    // OutputStream outputStream = connection.getOutputStream()
+    def scriptToken = """#!/bin/bash
+        curl -X POST \
+        ${url} \
+        -H 'Authorization: Basic ${authToken}' \
+        -H 'Accept: application/json' \
+        -H 'Content-Type: application/json' \
+        -H 'x-csrf-token: ${token}' \
+        --cookie cookieJar.txt \
+        --data ${input}'
+    """
+    // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
-    if (!(connection.responseCode == 200 || connection.responseCode == 201)) {
-        error "[${STEP_NAME}] Error: ${connection.getErrorStream().text}"
-        connection.disconnect()
-        throw new Exception("HTTPS Connection Failed")
-    }
+    def response = sh (
+        script : scriptToken,
+        returnStdout: true )
+    return response
+    echo response
+    // outputStream.write(input.getBytes())
+    // outputStream.flush()
 
-    JsonSlurper slurper = new JsonSlurper()
-    Map object = slurper.parseText(connection.content.text)
-    connection.disconnect()
+    // if (!(connection.responseCode == 200 || connection.responseCode == 201)) {
+    //     error "[${STEP_NAME}] Error: ${connection.getErrorStream().text}"
+    //     connection.disconnect()
+    //     throw new Exception("HTTPS Connection Failed")
+    // }
 
-    echo "[${STEP_NAME}] Pull Entity: ${object.d."__metadata"."uri"}"
-    echo "[${STEP_NAME}] Pull Status: ${object.d."status_descr"}"
+    // JsonSlurper slurper = new JsonSlurper()
+    // Map object = slurper.parseText(connection.content.text)
+    // connection.disconnect()
 
-    return object
+    // echo "[${STEP_NAME}] Pull Entity: ${object.d."__metadata"."uri"}"
+    // echo "[${STEP_NAME}] Pull Status: ${object.d."status_descr"}"
+
+    return null
 
 }
 
