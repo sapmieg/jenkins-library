@@ -103,9 +103,9 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken}' \
-        --data '{ "sc_name": "${configuration.repositoryName}" }'
+        --cookie cookieJar.txt \
+        -d sc_name=${configuration.repositoryName}
     """
-        // --cookie cookieJar.txt \
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
     def response = sh (
