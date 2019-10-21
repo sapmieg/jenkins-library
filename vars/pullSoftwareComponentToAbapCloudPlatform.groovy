@@ -105,7 +105,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
         -d '{ 
-            "sc_name":"${configuration.repositoryName}" 
+            "sc_name":"Z_DEMO_DM" 
         }'
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
