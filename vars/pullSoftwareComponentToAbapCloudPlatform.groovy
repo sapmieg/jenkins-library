@@ -75,22 +75,31 @@ void call(Map parameters = [:]) {
 
 private Map getXCsrfTokenAndCookie(URL url, String authToken) {
 
-    HttpURLConnection connection = createDefaultConnection(url, authToken)
-    connection.setRequestProperty("x-csrf-token", "fetch")
+    def script = """#!/bin/bash
+        curl -i -X -o tokenResponse.json GET \
+        ${url} \
+        -H 'Authorization: Basic ${authToken}' \
+        -H 'Accept: application/json' \
+        -H 'x-csrf-token: fetch'
+    """
+    
+    
+    // HttpURLConnection connection = createDefaultConnection(url, authToken)
+    // connection.setRequestProperty("x-csrf-token", "fetch")
 
-    connection.setRequestMethod("GET")
-    connection.connect()
-    token =  connection.getHeaderField("x-csrf-token")
-    cookie1 = connection.getHeaderField(1).split(";")[0] 
-    cookie2 = connection.getHeaderField(2).split(";")[0] 
-    cookie = cookie1 + "; " + cookie2 
-    connection.disconnect()
-    connection = null
+    // connection.setRequestMethod("GET")
+    // connection.connect()
+    // token =  connection.getHeaderField("x-csrf-token")
+    // cookie1 = connection.getHeaderField(1).split(";")[0] 
+    // cookie2 = connection.getHeaderField(2).split(";")[0] 
+    // cookie = cookie1 + "; " + cookie2 
+    // connection.disconnect()
+    // connection = null
 
-    Map result = [:]
-    result.cookie = cookie
-    result.token = token
-    return result
+    // Map result = [:]
+    // result.cookie = cookie
+    // result.token = token
+    // return result
 
 }
 
