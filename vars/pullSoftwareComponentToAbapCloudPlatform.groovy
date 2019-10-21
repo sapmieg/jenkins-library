@@ -111,7 +111,7 @@ public Map triggerPull(Map configuration, String url, String authToken) {
 
     echo 'x-csrf-token: ' + xCsrfToken
 
-    String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
+    String input = '\'{ "sc_name" : "' + configuration.repositoryName + '" }'\'
 
     // def url = new URL(urlString)
     // String xCsrfToken = getXCsrfToken(url, authToken)
