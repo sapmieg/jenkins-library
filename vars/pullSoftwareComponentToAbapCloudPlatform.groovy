@@ -75,13 +75,16 @@ void call(Map parameters = [:]) {
 
 private Map getXCsrfTokenAndCookie(URL url, String authToken) {
 
-    def script = """#!/bin/bash
+    def scriptToken = """#!/bin/bash
         curl -i -X -o tokenResponse.json GET \
         ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch'
     """
+
+    def response = sh(script:scriptToken)
+    echo response
     
     
     // HttpURLConnection connection = createDefaultConnection(url, authToken)
