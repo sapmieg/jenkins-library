@@ -76,13 +76,13 @@ void call(Map parameters = [:]) {
 private Map getXCsrfTokenAndCookie(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
-        curl -i -X HEAD \
+        curl -i HEAD \
         ${url} \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'x-csrf-token: fetch' \
         --cookie-jar responseHeader.txt \
-        | grep -Fi x-csrf-token | sed -En 's/^x-csrf-token: (.*)/\1/p'
+        | sed -En 's/^x-csrf-token: (.*)/\1/p'
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
