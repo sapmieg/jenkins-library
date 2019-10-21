@@ -89,7 +89,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
 
     echo 'x-csrf-token: ' + xCsrfToken
 
-    String input = '{ "sc_name" : "'+configuration.repositoryName+'" }'
+    // String input = '{ "sc_name" : "'+configuration.repositoryName+'" }'
 
     // def url = new URL(urlString)
     // String xCsrfToken = getXCsrfToken(url, authToken)
@@ -104,7 +104,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
-        -d ${input}
+        -d "{ "sc_name" : "${configuration.repositoryName}" }"
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
 
