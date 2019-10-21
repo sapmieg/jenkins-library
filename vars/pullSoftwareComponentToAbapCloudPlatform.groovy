@@ -133,7 +133,6 @@ public Map triggerPull(Map configuration, String url, String authToken) {
     def response = sh (
         script : scriptPull,
         returnStdout: true )
-    return response
     echo response
     // outputStream.write(input.getBytes())
     // outputStream.flush()
