@@ -119,7 +119,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     
     String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
 
-    def url = new URL(urlString)
+    // def url = new URL(urlString)
     String token = getXCsrfToken(url, authToken)
     // HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
     // connection.connect()
