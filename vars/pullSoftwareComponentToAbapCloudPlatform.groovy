@@ -73,7 +73,7 @@ void call(Map parameters = [:]) {
 }
 
 
-private String getXCsrfToken(URL url, String authToken) {
+public String getXCsrfToken(URL url, String authToken) {
 
     def scriptToken = """#!/bin/bash
         curl -I -X GET \
@@ -98,7 +98,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     String input = '{ "sc_name" : "' + configuration.repositoryName + '" }'
 
     // def url = new URL(urlString)
-    String token = getXCsrfToken(url, authToken)
+    String xCsrfToken = getXCsrfToken(url, authToken)
     // HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
     // connection.connect()
     // OutputStream outputStream = connection.getOutputStream()
@@ -108,7 +108,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
-        -H 'x-csrf-token: ${token}' \
+        -H 'x-csrf-token: ${xCsrfToken}' \
         --cookie cookieJar.txt \
         --data ${input}'
     """
@@ -141,24 +141,25 @@ private Map triggerPull(Map configuration, String url, String authToken) {
 
 private Map pollPullStatus(Map responseObject, URL pollUrl, String authToken) {
 
-    String status = responseObject.d."status"
-    Map returnObject = null
-    while(status == 'R') {
+    // String status = responseObject.d."status"
+    // Map returnObject = null
+    // while(status == 'R') {
 
-        Thread.sleep(5000)
-        HttpURLConnection pollConnection = createDefaultConnection(pollUrl, authToken)
-        pollConnection.connect()
+    //     Thread.sleep(5000)
+    //     HttpURLConnection pollConnection = createDefaultConnection(pollUrl, authToken)
+    //     pollConnection.connect()
 
-        if (pollConnection.responseCode == 200 || pollConnection.responseCode == 201) {
-            JsonSlurper slurper = new JsonSlurper()
-            returnObject = slurper.parseText(pollConnection.content.text)
-            status = returnObject.d."status"
-            pollConnection.disconnect()
-        } else {
-            error "[${STEP_NAME}] Error: ${pollConnection.getErrorStream().text}"
-            pollConnection.disconnect()
-            throw new Exception("HTTPS Connection Failed")
-        }
-    }
-    return returnObject
+    //     if (pollConnection.responseCode == 200 || pollConnection.responseCode == 201) {
+    //         JsonSlurper slurper = new JsonSlurper()
+    //         returnObject = slurper.parseText(pollConnection.content.text)
+    //         status = returnObject.d."status"
+    //         pollConnection.disconnect()
+    //     } else {
+    //         error "[${STEP_NAME}] Error: ${pollConnection.getErrorStream().text}"
+    //         pollConnection.disconnect()
+    //         throw new Exception("HTTPS Connection Failed")
+    //     }
+    // }
+    // return returnObject
+    return null
 }
