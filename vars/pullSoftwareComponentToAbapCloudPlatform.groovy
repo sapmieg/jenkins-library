@@ -138,7 +138,7 @@ private String pollPullStatus(String url, String authToken) {
         echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         pollResponseJson = slurper.parseText(pollResponse)
-        printf pollResponseJson
+        print pollResponseJson
         if (pollResponse.d != null) {
             status = pollResponseJson.d.status
             echo status
