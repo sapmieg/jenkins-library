@@ -60,7 +60,7 @@ void call(Map parameters = [:]) {
         String urlString = configuration.host + ':443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'
         echo "[${STEP_NAME}] General Parameters: URL = \"${urlString}\", repositoryName = \"${configuration.repositoryName}\""
 
-        Object pullEntity = triggerPull(configuration, urlString, authToken)
+        String urlPullEntity = triggerPull(configuration, urlString, authToken)
 
         // def pollUrl = new URL(object.d."__metadata"."uri")
         // Map responseObject = pollPullStatus(object, pollUrl, authToken)
@@ -72,7 +72,7 @@ void call(Map parameters = [:]) {
     }
 }
 
-private Object triggerPull(Map configuration, String url, String authToken) {
+private String triggerPull(Map configuration, String url, String authToken) {
     
     def xCsrfTokenScript = """#!/bin/bash
         curl -I -X GET ${url} \
@@ -109,7 +109,7 @@ private Object triggerPull(Map configuration, String url, String authToken) {
         echo responseJson.d.status_descr
     }
 
-    return responseJson
+    return responseJson.__metadata.uri
 
 }
 
