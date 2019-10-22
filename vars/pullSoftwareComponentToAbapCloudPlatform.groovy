@@ -60,7 +60,7 @@ void call(Map parameters = [:]) {
         String urlString = configuration.host + ':443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'
         echo "[${STEP_NAME}] General Parameters: URL = \"${urlString}\", repositoryName = \"${configuration.repositoryName}\""
 
-        Map object = triggerPull(configuration, urlString, authToken)
+        Object pullEntity = triggerPull(configuration, urlString, authToken)
 
         // def pollUrl = new URL(object.d."__metadata"."uri")
         // Map responseObject = pollPullStatus(object, pollUrl, authToken)
@@ -87,16 +87,6 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         script : xCsrfTokenScript,
         returnStdout: true )
 
-    echo 'x-csrf-token: ' + xCsrfToken.trim()
-
-    // String input = '{ "sc_name" : "'+configuration.repositoryName+'" }'
-
-    // def url = new URL(urlString)
-    // String xCsrfToken = getXCsrfToken(url, authToken)
-    // HttpURLConnection connection = createPostConnection(url, tokenAndCookie.token, tokenAndCookie.cookie, authToken)
-    // connection.connect()
-    // OutputStream outputStream = connection.getOutputStream()
-
     def scriptPull = """#!/bin/bash
         curl -X POST ${url} \
         -H 'Authorization: Basic ${authToken}' \
@@ -106,29 +96,20 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         --cookie cookieJar.txt \
         -d '{ \"sc_name\": \"Z_DEMO_DM\" }'
     """
-    // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
-    echo scriptPull
+    
     def response = sh (
         script : scriptPull,
         returnStdout: true )
     echo response
-    // outputStream.write(input.getBytes())
-    // outputStream.flush()
 
-    // if (!(connection.responseCode == 200 || connection.responseCode == 201)) {
-    //     error "[${STEP_NAME}] Error: ${connection.getErrorStream().text}"
-    //     connection.disconnect()
-    //     throw new Exception("HTTPS Connection Failed")
-    // }
+    JsonSlurper slurper = new JsonSlurper()
+    responseJson = slurper.parseText(response)
+    echo responseJson.d.status
+    if (responseJson.d.status == "R") {
+        echo responseJson.d.status_descr
+    }
 
-    // JsonSlurper slurper = new JsonSlurper()
-    // Map object = slurper.parseText(connection.content.text)
-    // connection.disconnect()
-
-    // echo "[${STEP_NAME}] Pull Entity: ${object.d."__metadata"."uri"}"
-    // echo "[${STEP_NAME}] Pull Status: ${object.d."status_descr"}"
-
-    return null
+    return responseJson
 
 }
 
