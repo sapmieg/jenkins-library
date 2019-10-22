@@ -137,7 +137,7 @@ private String pollPullStatus(String url, String authToken) {
         JsonSlurper slurper = new JsonSlurper()
         Map pollResponseJson = slurper.parseText(pollResponse)
         
-        if (responseJson.d != null) {
+        if (pollResponseJson.d != null) {
             print pollResponseJson
             status = pollResponseJson.d.status.toString()
         } else {
