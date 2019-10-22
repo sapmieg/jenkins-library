@@ -48,8 +48,14 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
         shellRule.setReturnValue(JenkinsShellCallRule.Type.REGEX, /.*https:\/\/example\.com.*/, /{"d" : { "__metadata" : { "uri" : "https:\/\/example.com" } , "status" : "S", "status_descr" : "Success" }}/)
 
         stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://example.com', repositoryName: 'Z_DEMO_DM', username: 'user', password: 'password')
+        System.out.println("XXXXXXXX")
+        System.out.println(shell[0])
+        System.out.println("XXXXXXXX")
+        System.out.println(shell[1])
+        System.out.println("XXXXXXXX")
+        System.out.println(shell[2])
         assertThat(shellRule.shell[0], containsString('x-csrf-token: fetch'))
-        assertThat(shellRule.shell[0], containsString('https://example.com:443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'))
+        assertThat(shellRule.shell[0], containsString('https://example.com/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'))
 
     }
 
