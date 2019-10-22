@@ -62,13 +62,14 @@ void call(Map parameters = [:]) {
 
         String urlPullEntity = triggerPull(configuration, urlString, authToken)
 
-        // def pollUrl = new URL(object.d."__metadata"."uri")
-        // Map responseObject = pollPullStatus(object, pollUrl, authToken)
+        if (urlPullEntity != null) {
+            Map responseObject = pollPullStatus(object, pollUrl, authToken)
 
-        // echo "[${STEP_NAME}] Pull Status: ${responseObject.d."status_descr"}"
-        // if (responseObject.d."status" != 'S') {
-        //     throw new Exception("Pull Failed")
-        // }  
+            echo "[${STEP_NAME}] Pull Status: ${responseObject.d."status_descr"}"
+            if (responseObject.d."status" != 'S') {
+                throw new Exception("Pull Failed")
+            }  
+        }
     }
 }
 
@@ -104,9 +105,8 @@ private String triggerPull(Map configuration, String url, String authToken) {
 
     JsonSlurper slurper = new JsonSlurper()
     Map responseJson = slurper.parseText(response)
-    echo responseJson.d.status
     String entityUri = null
-    if (responseJson.d.status == "R") {
+    if (responseJson.e.status == "R") {
         echo responseJson.d.status_descr
         entityUri = responseJson.d."__metadata".uri.toString()
     }
