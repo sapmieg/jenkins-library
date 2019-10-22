@@ -116,16 +116,12 @@ private String triggerPull(Map configuration, String url, String authToken) {
 private String pollPullStatus(String url, String authToken) {
 
     String status = "R";
-    // escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
-    // escapedUrl = url.replaceAll('\\)','%28').replaceAll('\\(','%29')
-    escapedUrl = url
-    echo escapedUrl
     while(status == "R") {
 
         Thread.sleep(5000)
 
         def pollScript = """#!/bin/bash
-            curl -X GET "${escapedUrl}" \
+            curl -X GET "${url}" \
             -H 'Authorization: Basic ${authToken}' \
             -H 'Accept: application/json' \
         """
@@ -136,9 +132,7 @@ private String pollPullStatus(String url, String authToken) {
         echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         Map pollResponseJson = slurper.parseText(pollResponse)
-        
         if (pollResponseJson.d != null) {
-            print pollResponseJson
             status = pollResponseJson.d.status.toString()
         } else {
             error "[${STEP_NAME}] Error: \n ${pollResponse}"
@@ -147,24 +141,4 @@ private String pollPullStatus(String url, String authToken) {
         echo "[${STEP_NAME}] Pull Status: ${pollResponseJson.d.status_descr.toString()}"
     }
     return status
-    // String status = responseObject.d."status"
-    // Map returnObject = null
-    // while(status == 'R') {
-
-    //     Thread.sleep(5000)
-    //     HttpURLConnection pollConnection = createDefaultConnection(pollUrl, authToken)
-    //     pollConnection.connect()
-
-    //     if (pollConnection.responseCode == 200 || pollConnection.responseCode == 201) {
-    //         JsonSlurper slurper = new JsonSlurper()
-    //         returnObject = slurper.parseText(pollConnection.content.text)
-    //         status = returnObject.d."status"
-    //         pollConnection.disconnect()
-    //     } else {
-    //         error "[${STEP_NAME}] Error: ${pollConnection.getErrorStream().text}"
-    //         pollConnection.disconnect()
-    //         throw new Exception("HTTPS Connection Failed")
-    //     }
-    // }
-    // return returnObject
 }
