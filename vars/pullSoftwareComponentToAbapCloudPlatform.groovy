@@ -123,13 +123,13 @@ private Map pollPullStatus(String url, String authToken) {
         Thread.sleep(5000)
 
         escapedUrl = url.replaceAll(')','\\)')
-
+        echo escapedUrl
         def pollScript = """#!/bin/bash
             curl -I -X GET ${escapedUrl} \
             -H 'Authorization: Basic ${authToken}' \
             -H 'Accept: application/json' \
         """
-
+        echo pollScript
         def pollResponse = sh (
             script : pollScript,
             returnStdout: true )
