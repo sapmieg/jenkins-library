@@ -122,7 +122,7 @@ private Map pollPullStatus(String url, String authToken) {
 
         Thread.sleep(5000)
 
-        escapedUrl = url.replaceAll(')','\\)').replaceAll('(','\\(')
+        escapedUrl = url.replaceAll('\)','\\\)').replaceAll('\(','\\\(')
         echo escapedUrl
         def pollScript = """#!/bin/bash
             curl -I -X GET ${escapedUrl} \
