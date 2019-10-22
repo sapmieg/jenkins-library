@@ -146,7 +146,7 @@ private String pollPullStatus(String url, String authToken) {
         }
     }
     echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
-    return responseObject.d.status
+    return responseObject.d.status.toString()
     // String status = responseObject.d."status"
     // Map returnObject = null
     // while(status == 'R') {
