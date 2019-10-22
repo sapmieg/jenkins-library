@@ -105,7 +105,7 @@ private Object triggerPull(Map configuration, String url, String authToken) {
     JsonSlurper slurper = new JsonSlurper()
     responseJson = slurper.parseText(response)
     echo responseJson.d.status
-    if (responseJson.d.statu == "R") {
+    if (responseJson.d.status == "R") {
         echo responseJson.d.status_descr
     }
 
