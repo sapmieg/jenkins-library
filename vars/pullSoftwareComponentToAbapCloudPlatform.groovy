@@ -94,7 +94,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
         -H 'Content-Type: application/json' \
         -H 'x-csrf-token: ${xCsrfToken.trim()}' \
         --cookie cookieJar.txt \
-        -d '{ \"sc_name\": \"Z_DEMO_DM\" }'
+        -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
     """
     
     def response = sh (
@@ -107,9 +107,10 @@ private String triggerPull(Map configuration, String url, String authToken) {
     echo responseJson.d.status
     if (responseJson.d.status == "R") {
         echo responseJson.d.status_descr
+        String uri = responseJson.__metadata.uri
     }
 
-    return responseJson.__metadata.uri
+    return uri
 
 }
 
