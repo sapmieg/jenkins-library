@@ -140,7 +140,7 @@ private String pollPullStatus(String url, String authToken) {
         pollResponseJson = slurper.parseText(pollResponse)
 
         print pollResponseJson
-        status = pollResponseJson.d.status
+        status = pollResponseJson.d.status.toString()
         echo status
         // } else {
         //     error "[${STEP_NAME}] Error: \n ${pollResponse}"
@@ -148,7 +148,7 @@ private String pollPullStatus(String url, String authToken) {
         // }
     }
     echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
-    return responseObject.d.status.toString()
+    return status
     // String status = responseObject.d."status"
     // Map returnObject = null
     // while(status == 'R') {
