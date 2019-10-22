@@ -28,7 +28,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
         .around(new JenkinsReadYamlRule(this))
         .around(thrown)
         .around(stepRule)
-//        .around(loggingRule)
+        .around(loggingRule)
         .around(new JenkinsCredentialsRule(this)
             .withCredentials('CM', 'anonymous', '********'))
 
