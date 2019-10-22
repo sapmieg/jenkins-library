@@ -144,7 +144,7 @@ private String pollPullStatus(String url, String authToken) {
             error "[${STEP_NAME}] Error: \n ${pollResponse}"
             throw new Exception("HTTPS Connection Failed")
         }
-        echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr.toString()}"
+        echo "[${STEP_NAME}] Pull Status: ${pollResponseJson.d.status_descr.toString()}"
     }
     return status
     // String status = responseObject.d."status"
