@@ -106,11 +106,12 @@ private String triggerPull(Map configuration, String url, String authToken) {
     JsonSlurper slurper = new JsonSlurper()
     Map responseJson = slurper.parseText(response)
     String entityUri = null
-    if (responseJson.e.status == "R") {
-        echo responseJson.d.status_descr
-        entityUri = responseJson.d."__metadata".uri.toString()
+    if (responseJson.e != null) {
+        if (responseJson.e.status == "R") {
+            echo responseJson.d.status_descr
+            entityUri = responseJson.d."__metadata".uri.toString()
+        }
     }
-
     return entityUri
 
 }
