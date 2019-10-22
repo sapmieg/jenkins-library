@@ -138,8 +138,8 @@ private String pollPullStatus(String url, String authToken) {
         echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         pollResponseJson = slurper.parseText(pollResponse)
-        print pollResponseJson
         if (pollResponse.d != null) {
+            print pollResponseJson
             status = pollResponseJson.d.status
             echo status
         } else {
