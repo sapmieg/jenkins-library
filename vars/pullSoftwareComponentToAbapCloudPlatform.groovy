@@ -97,18 +97,16 @@ private String triggerPull(Map configuration, String url, String authToken) {
         --cookie cookieJar.txt \
         -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
     """
-    echo scriptPull
+
     def response = sh (
         script : scriptPull,
         returnStdout: true )
-    echo response
 
     JsonSlurper slurper = new JsonSlurper()
     Map responseJson = slurper.parseText(response)
     String entityUri = null
     if (responseJson.d != null) {
         if (responseJson.d.status == "R") {
-            echo responseJson.d.status_descr
             entityUri = responseJson.d.__metadata.uri.toString()
             echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr}"
         }
@@ -131,7 +129,7 @@ private Map pollPullStatus(String url, String authToken) {
         """
 
         def pollResponse = sh (
-            script : xCsrfTokenScript,
+            script : pollScript,
             returnStdout: true )
     
         
