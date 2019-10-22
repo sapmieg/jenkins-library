@@ -107,7 +107,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
     echo responseJson.d.status
     if (responseJson.d.status == "R") {
         echo responseJson.d.status_descr
-        echo.responseJson.d.uuid
+        echo responseJson.d."__metadata"
     }
 
     return null
