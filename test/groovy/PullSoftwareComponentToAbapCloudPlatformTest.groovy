@@ -31,7 +31,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
         .around(loggingRule)
         .around(shellRule)
         .around(new JenkinsCredentialsRule(this)
-            .withCredentials('CM', 'anonymous', '********'))
+            .withCredentials('CM', 'anonymous', 'password'))
 
     @Before
     public void setup() {
@@ -41,7 +41,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
     public void test() {
         thrown.expect(Exception)
         thrown.expectMessage("Authentification Failed")
-        stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://17c334ca-66f2-4476-9757-5c5b0a515fdb.abap.stagingaws.hanavlab.ondemand.co', repositoryName: 'Z_DEMO_DM', username: 'CC_USER', password: 'xPJnSftVVs9XkTMcXMD(aPXZXDggceXqlmUDaDRa')
+        stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://example.com', repositoryName: 'Z_DEMO_DM', username: 'CC_USER', password: 'abc')
         assertThat(shellRule.shell, hasItem("curl -I -X GET ${url} \
           -H 'Authorization: Basic ${authToken}' \
           -H 'Accept: application/json' \
