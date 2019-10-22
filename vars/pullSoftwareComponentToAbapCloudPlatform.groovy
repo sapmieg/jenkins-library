@@ -96,7 +96,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
         --cookie cookieJar.txt \
         -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
     """
-    
+    echo scriptPull
     def response = sh (
         script : scriptPull,
         returnStdout: true )
