@@ -89,7 +89,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
         returnStdout: true )
 
     def scriptPull = """#!/bin/bash
-        curl -X POST ${url} \
+        curl -X POST "${url}" \
         -H 'Authorization: Basic ${authToken}' \
         -H 'Accept: application/json' \
         -H 'Content-Type: application/json' \
