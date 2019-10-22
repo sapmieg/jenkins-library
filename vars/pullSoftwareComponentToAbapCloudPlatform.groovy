@@ -89,7 +89,6 @@ private String triggerPull(Map configuration, String url, String authToken) {
         returnStdout: true )
     if (xCsrfToken != null) {
 
-        System.out.println xCsrfToken
         def scriptPull = """#!/bin/bash
             curl -X POST \"${url}\" \
             -H 'Authorization: Basic ${authToken}' \
