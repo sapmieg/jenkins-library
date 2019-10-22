@@ -67,14 +67,14 @@ void call(Map parameters = [:]) {
             if (finalStatus != 'S') {
                 throw new Exception("Pull Failed")
             }  
-        }
+        } 
     }
 }
 
 private String triggerPull(Map configuration, String url, String authToken) {
     
     String entityUri = null
-    
+
     def xCsrfTokenScript = """#!/bin/bash
         curl -I -X GET ${url} \
         -H 'Authorization: Basic ${authToken}' \
@@ -89,6 +89,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
         returnStdout: true )
 
     if (XCsrfToken != null) {
+
         def scriptPull = """#!/bin/bash
             curl -X POST \"${url}\" \
             -H 'Authorization: Basic ${authToken}' \
@@ -111,6 +112,11 @@ private String triggerPull(Map configuration, String url, String authToken) {
                 echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
             }
         }
+
+    } else {
+
+        throw new Exception("Authentification Failed")
+        
     }
     return entityUri
 
