@@ -107,7 +107,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         -d "{ \"sc_name\":\"Z_DEMO_DM\" }"
     """
     // | grep -E 'x-csrf-token|set-cookie' tokenAndCookie.txt
-
+    echo scriptPull
     def response = sh (
         script : scriptPull,
         returnStdout: true )
