@@ -114,10 +114,9 @@ private String triggerPull(Map configuration, String url, String authToken) {
         }
 
     } else {
-
         throw new Exception("Authentification Failed")
-
     }
+    
     return entityUri
 
 }
