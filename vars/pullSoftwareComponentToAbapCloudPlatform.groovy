@@ -108,7 +108,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
     if (responseJson.d.status == "R") {
         echo responseJson.d.status_descr
         echo responseJson.d."__metadata"
-        String uri = responseJson.d."__metadata".uri
+        uri = responseJson.d."__metadata".uri
     }
 
     return uri
