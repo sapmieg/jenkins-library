@@ -138,14 +138,14 @@ private String pollPullStatus(String url, String authToken) {
         echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         pollResponseJson = slurper.parseText(pollResponse)
-        if (pollResponse.d != null) {
-            print pollResponseJson
-            status = pollResponseJson.d.status
-            echo status
-        } else {
-            error "[${STEP_NAME}] Error: \n ${pollResponse}"
-            throw new Exception("HTTPS Connection Failed")
-        }
+
+        print pollResponseJson
+        status = pollResponseJson.d.status
+        echo status
+        // } else {
+        //     error "[${STEP_NAME}] Error: \n ${pollResponse}"
+        //     throw new Exception("HTTPS Connection Failed")
+        // }
     }
     echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
     return responseObject.d.status.toString()
