@@ -72,7 +72,7 @@ void call(Map parameters = [:]) {
     }
 }
 
-private Map triggerPull(Map configuration, String url, String authToken) {
+private Object triggerPull(Map configuration, String url, String authToken) {
     
     def xCsrfTokenScript = """#!/bin/bash
         curl -I -X GET ${url} \
@@ -105,7 +105,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
     JsonSlurper slurper = new JsonSlurper()
     responseJson = slurper.parseText(response)
     echo responseJson.d.status
-    if (responseJson.d.status == "R") {
+    if (responseJson.d.statu == "R") {
         echo responseJson.d.status_descr
     }
 
