@@ -63,10 +63,10 @@ void call(Map parameters = [:]) {
         String urlPullEntity = triggerPull(configuration, urlString, authToken)
 
         if (urlPullEntity != null) {
-            Map responseObject = pollPullStatus(urlPullEntity, authToken)
+            String finalStatus = pollPullStatus(urlPullEntity, authToken)
 
             echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
-            if (responseObject.d.status != 'S') {
+            if (finalStatus != 'S') {
                 throw new Exception("Pull Failed")
             }  
         }
@@ -115,7 +115,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
 
 }
 
-private Map pollPullStatus(String url, String authToken) {
+private String pollPullStatus(String url, String authToken) {
 
     String status = "R";
     // escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
@@ -145,7 +145,8 @@ private Map pollPullStatus(String url, String authToken) {
             throw new Exception("HTTPS Connection Failed")
         }
     }
-    return pollResponseJson
+    echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
+    return responseObject.d.status
     // String status = responseObject.d."status"
     // Map returnObject = null
     // while(status == 'R') {
