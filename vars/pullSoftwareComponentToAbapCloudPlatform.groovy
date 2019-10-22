@@ -73,6 +73,8 @@ void call(Map parameters = [:]) {
 
 private String triggerPull(Map configuration, String url, String authToken) {
     
+    String entityUri = null
+    
     def xCsrfTokenScript = """#!/bin/bash
         curl -I -X GET ${url} \
         -H 'Authorization: Basic ${authToken}' \
@@ -82,31 +84,32 @@ private String triggerPull(Map configuration, String url, String authToken) {
         | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
     """
 
-    def xCsrfToken = sh (
+    def XCsrfToken = sh (
         script : xCsrfTokenScript,
         returnStdout: true )
 
-    def scriptPull = """#!/bin/bash
-        curl -X POST \"${url}\" \
-        -H 'Authorization: Basic ${authToken}' \
-        -H 'Accept: application/json' \
-        -H 'Content-Type: application/json' \
-        -H 'x-csrf-token: ${xCsrfToken.trim()}' \
-        --cookie cookieJar.txt \
-        -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
-    """
+    if (XCsrfToken != null) {
+        def scriptPull = """#!/bin/bash
+            curl -X POST \"${url}\" \
+            -H 'Authorization: Basic ${authToken}' \
+            -H 'Accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -H 'x-csrf-token: ${XCsrfToken.trim()}' \
+            --cookie cookieJar.txt \
+            -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
+        """
 
-    def response = sh (
-        script : scriptPull,
-        returnStdout: true )
+        def response = sh (
+            script : scriptPull,
+            returnStdout: true )
 
-    JsonSlurper slurper = new JsonSlurper()
-    Map responseJson = slurper.parseText(response)
-    String entityUri = null
-    if (responseJson.d != null) {
-        if (responseJson.d.status.toString() == "R") {
-            entityUri = responseJson.d.__metadata.uri.toString()
-            echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
+        JsonSlurper slurper = new JsonSlurper()
+        Map responseJson = slurper.parseText(response)
+        if (responseJson.d != null) {
+            if (responseJson.d.status.toString() == "R") {
+                entityUri = responseJson.d.__metadata.uri.toString()
+                echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
+            }
         }
     }
     return entityUri

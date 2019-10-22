@@ -29,6 +29,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
         .around(thrown)
         .around(stepRule)
         .around(loggingRule)
+        .around(shellRule)
         .around(new JenkinsCredentialsRule(this)
             .withCredentials('CM', 'anonymous', '********'))
 
@@ -39,6 +40,12 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
     @Test
     public void test() {
         stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://17c334ca-66f2-4476-9757-5c5b0a515fdb.abap.stagingaws.hanavlab.ondemand.co', repositoryName: 'Z_DEMO_DM', username: 'CC_USER', password: 'xPJnSftVVs9XkTMcXMD(aPXZXDggceXqlmUDaDRa')
+        assertThat(shellRule.shell, hasItem("curl -I -X GET ${url} \
+          -H 'Authorization: Basic ${authToken}' \
+          -H 'Accept: application/json' \
+          -H 'x-csrf-token: fetch' \
+          --cookie-jar cookieJar.txt \
+          | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'".toString()))
     }
 
     @Test
