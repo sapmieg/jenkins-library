@@ -63,10 +63,10 @@ void call(Map parameters = [:]) {
         String urlPullEntity = triggerPull(configuration, urlString, authToken)
 
         if (urlPullEntity != null) {
-            Map responseObject = pollPullStatus(object, pollUrl, authToken)
+            Map responseObject = pollPullStatus(urlPullEntity, authToken)
 
-            echo "[${STEP_NAME}] Pull Status: ${responseObject.d."status_descr"}"
-            if (responseObject.d."status" != 'S') {
+            echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
+            if (responseObject.d.status != 'S') {
                 throw new Exception("Pull Failed")
             }  
         }
@@ -106,18 +106,45 @@ private String triggerPull(Map configuration, String url, String authToken) {
     JsonSlurper slurper = new JsonSlurper()
     Map responseJson = slurper.parseText(response)
     String entityUri = null
-    if (responseJson.e != null) {
-        if (responseJson.e.status == "R") {
+    if (responseJson.d != null) {
+        if (responseJson.d.status == "R") {
             echo responseJson.d.status_descr
-            entityUri = responseJson.d."__metadata".uri.toString()
+            entityUri = responseJson.d.__metadata.uri.toString()
+            echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr}"
         }
     }
     return entityUri
 
 }
 
-private Map pollPullStatus(Map responseObject, URL pollUrl, String authToken) {
+private Map pollPullStatus(String url, String authToken) {
 
+    String status = "R";
+    while(status == "R") {
+
+        Thread.sleep(5000)
+
+        def pollScript = """#!/bin/bash
+            curl -I -X GET ${url} \
+            -H 'Authorization: Basic ${authToken}' \
+            -H 'Accept: application/json' \
+        """
+
+        def pollResponse = sh (
+            script : xCsrfTokenScript,
+            returnStdout: true )
+    
+        
+        JsonSlurper slurper = new JsonSlurper()
+        pollResponseJson = slurper.parseText(pollResponse)
+        if (pollResponse.d != null) {
+            status = pollResponseJson.d.status
+        } else {
+            error "[${STEP_NAME}] Error: \n ${pollResponse}"
+            throw new Exception("HTTPS Connection Failed")
+        }
+    }
+    return pollResponseJson
     // String status = responseObject.d."status"
     // Map returnObject = null
     // while(status == 'R') {
@@ -138,5 +165,4 @@ private Map pollPullStatus(Map responseObject, URL pollUrl, String authToken) {
     //     }
     // }
     // return returnObject
-    return null
 }
