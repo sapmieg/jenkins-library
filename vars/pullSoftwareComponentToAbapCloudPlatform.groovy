@@ -87,7 +87,7 @@ private Map triggerPull(Map configuration, String url, String authToken) {
         script : xCsrfTokenScript,
         returnStdout: true )
 
-    echo 'x-csrf-token: ' + xCsrfToken
+    echo 'x-csrf-token: ' + xCsrfToken.trim()
 
     // String input = '{ "sc_name" : "'+configuration.repositoryName+'" }'
 
