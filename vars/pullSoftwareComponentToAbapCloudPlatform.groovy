@@ -118,18 +118,17 @@ private String triggerPull(Map configuration, String url, String authToken) {
 private Map pollPullStatus(String url, String authToken) {
 
     String status = "R";
+    escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
+    
     while(status == "R") {
 
         Thread.sleep(5000)
 
-        escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
-        echo escapedUrl
         def pollScript = """#!/bin/bash
             curl -I -X GET ${escapedUrl} \
             -H 'Authorization: Basic ${authToken}' \
             -H 'Accept: application/json' \
         """
-        echo pollScript
         def pollResponse = sh (
             script : pollScript,
             returnStdout: true )
