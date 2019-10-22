@@ -118,7 +118,8 @@ private String triggerPull(Map configuration, String url, String authToken) {
 private Map pollPullStatus(String url, String authToken) {
 
     String status = "R";
-    escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
+    // escapedUrl = url.replaceAll('\\)','\\\\)').replaceAll('\\(','\\\\(')
+    escapedUrl = url.replaceAll('\\)','%28').replaceAll('\\(','%29')
     
     while(status == "R") {
 
