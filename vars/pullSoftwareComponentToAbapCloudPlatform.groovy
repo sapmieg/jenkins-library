@@ -133,7 +133,7 @@ private Map pollPullStatus(String url, String authToken) {
             script : pollScript,
             returnStdout: true )
     
-        
+        echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         pollResponseJson = slurper.parseText(pollResponse)
         if (pollResponse.d != null) {
