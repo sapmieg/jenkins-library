@@ -1,7 +1,9 @@
 import java.util.Map
+import static org.hamcrest.Matchers.hasItem
+import static org.junit.Assert.assertThat
 
 import org.hamcrest.Matchers
-import org.hamcrest.core.StringContains
+import static org.hamcrest.Matchers.containsString
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -13,6 +15,7 @@ import util.JenkinsCredentialsRule
 import util.JenkinsStepRule
 import util.JenkinsLoggingRule
 import util.JenkinsReadYamlRule
+import util.JenkinsShellCallRule
 import util.Rules
 
 import hudson.AbortException
@@ -22,6 +25,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
     private ExpectedException thrown = new ExpectedException()
     private JenkinsStepRule stepRule = new JenkinsStepRule(this)
     private JenkinsLoggingRule loggingRule = new JenkinsLoggingRule(this)
+    private JenkinsShellCallRule shellRule = new JenkinsShellCallRule(this)
 
     @Rule
     public RuleChain ruleChain = Rules.getCommonRules(this)
@@ -38,16 +42,15 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
     }
 
     @Test
-    public void test() {
-        thrown.expect(Exception)
-        thrown.expectMessage("Authentification Failed")
+    public void pullSuccessful() {
+        shellRule.setReturnValue(JenkinsShellCallRule.Type.REGEX, /.*x-csrf-token: fetch.*/, "TOKEN")
+        shellRule.setReturnValue(JenkinsShellCallRule.Type.REGEX, /.*POST.*/, /{"d" : { "__metadata" : { "uri" : "https:\/\/example.com" } , "status" : "R", "status_descr" : "Running" }}/)
+        shellRule.setReturnValue(JenkinsShellCallRule.Type.REGEX, /.*https:\/\/example\.com.*/, /{"d" : { "__metadata" : { "uri" : "https:\/\/example.com" } , "status" : "S", "status_descr" : "Success" }}/)
+
         stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://example.com', repositoryName: 'Z_DEMO_DM', username: 'user', password: 'password')
-        assertThat(shellRule.shell, hasItem("curl -I -X GET https://example.com:443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull \
-          -H 'Authorization: Basic ${authToken}' \
-          -H 'Accept: application/json' \
-          -H 'x-csrf-token: fetch' \
-          --cookie-jar cookieJar.txt \
-          | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'".toString()))
+        assertThat(shellRule.shell[0], containsString('x-csrf-token: fetch'))
+        assertThat(shellRule.shell[0], containsString('https://example.com:443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'))
+
     }
 
     @Test

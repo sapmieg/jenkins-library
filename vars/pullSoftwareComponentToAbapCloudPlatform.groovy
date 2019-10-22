@@ -57,7 +57,7 @@ void call(Map parameters = [:]) {
 
         String usernameColonPassword = configuration.username + ":" + configuration.password
         String authToken = usernameColonPassword.bytes.encodeBase64().toString()
-        String urlString = configuration.host + ':443/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'
+        String urlString = configuration.host + '/sap/opu/odata/sap/MANAGE_GIT_REPOSITORY/Pull'
         echo "[${STEP_NAME}] General Parameters: URL = \"${urlString}\", repositoryName = \"${configuration.repositoryName}\""
 
         String urlPullEntity = triggerPull(configuration, urlString, authToken)
@@ -84,22 +84,21 @@ private String triggerPull(Map configuration, String url, String authToken) {
         | awk 'BEGIN {FS=": "}/^x-csrf-token/{print \$2}'
     """
 
-    def XCsrfToken = sh (
+    def xCsrfToken = sh (
         script : xCsrfTokenScript,
         returnStdout: true )
+    if (xCsrfToken != null) {
 
-    if (XCsrfToken != null) {
-
+        System.out.println xCsrfToken
         def scriptPull = """#!/bin/bash
             curl -X POST \"${url}\" \
             -H 'Authorization: Basic ${authToken}' \
             -H 'Accept: application/json' \
             -H 'Content-Type: application/json' \
-            -H 'x-csrf-token: ${XCsrfToken.trim()}' \
+            -H 'x-csrf-token: ${xCsrfToken.trim()}' \
             --cookie cookieJar.txt \
             -d '{ \"sc_name\": \"${configuration.repositoryName}\" }'
         """
-
         def response = sh (
             script : scriptPull,
             returnStdout: true )
@@ -116,7 +115,7 @@ private String triggerPull(Map configuration, String url, String authToken) {
     } else {
         throw new Exception("Authentification Failed")
     }
-    
+
     return entityUri
 
 }
