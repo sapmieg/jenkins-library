@@ -107,16 +107,16 @@ private String triggerPull(Map configuration, String url, String authToken) {
         JsonSlurper slurper = new JsonSlurper()
         Map responseJson = slurper.parseText(response)
         if (responseJson.d != null) {
-            if (responseJson.d.status.toString() == "R") {
-                entityUri = responseJson.d.__metadata.uri.toString()
-                echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
-            }
+            entityUri = responseJson.d.__metadata.uri.toString()
+            echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
+        } else {
+            error "[${STEP_NAME}] Error: \n ${pollResponse}"
         }
 
     } else {
 
         throw new Exception("Authentification Failed")
-        
+
     }
     return entityUri
 
