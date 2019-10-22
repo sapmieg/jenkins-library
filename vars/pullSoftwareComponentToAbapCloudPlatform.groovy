@@ -64,8 +64,6 @@ void call(Map parameters = [:]) {
 
         if (urlPullEntity != null) {
             String finalStatus = pollPullStatus(urlPullEntity, authToken)
-
-            echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
             if (finalStatus != 'S') {
                 throw new Exception("Pull Failed")
             }  
@@ -106,9 +104,9 @@ private String triggerPull(Map configuration, String url, String authToken) {
     Map responseJson = slurper.parseText(response)
     String entityUri = null
     if (responseJson.d != null) {
-        if (responseJson.d.status == "R") {
+        if (responseJson.d.status.toString() == "R") {
             entityUri = responseJson.d.__metadata.uri.toString()
-            echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr}"
+            echo "[${STEP_NAME}] Pull Status: ${responseJson.d.status_descr.toString()}"
         }
     }
     return entityUri
@@ -138,16 +136,16 @@ private String pollPullStatus(String url, String authToken) {
         echo pollResponse
         JsonSlurper slurper = new JsonSlurper()
         Map pollResponseJson = slurper.parseText(pollResponse)
-
-        print pollResponseJson
-        status = pollResponseJson.d.status.toString()
-        echo status
-        // } else {
-        //     error "[${STEP_NAME}] Error: \n ${pollResponse}"
-        //     throw new Exception("HTTPS Connection Failed")
-        // }
+        
+        if (responseJson.d != null) {
+            print pollResponseJson
+            status = pollResponseJson.d.status.toString()
+        } else {
+            error "[${STEP_NAME}] Error: \n ${pollResponse}"
+            throw new Exception("HTTPS Connection Failed")
+        }
+        echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr.toString()}"
     }
-    echo "[${STEP_NAME}] Pull Status: ${responseObject.d.status_descr}"
     return status
     // String status = responseObject.d."status"
     // Map returnObject = null
