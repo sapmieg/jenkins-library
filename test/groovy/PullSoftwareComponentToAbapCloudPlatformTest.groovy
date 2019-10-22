@@ -48,12 +48,7 @@ public class PullSoftwareComponentToAbapCloudPlatformTest extends BasePiperTest 
         shellRule.setReturnValue(JenkinsShellCallRule.Type.REGEX, /.*https:\/\/example\.com.*/, /{"d" : { "__metadata" : { "uri" : "https:\/\/example.com\/URI" } , "status" : "S", "status_descr" : "Success" }}/)
 
         stepRule.step.pullSoftwareComponentToAbapCloudPlatform(script: nullScript, host: 'https://example.com', repositoryName: 'Z_DEMO_DM', username: 'user', password: 'password')
-        System.out.println("XXXXXXXX")
-        System.out.println(shellRule.shell[0])
-        System.out.println("XXXXXXXX")
-        System.out.println(shellRule.shell[1])
-        System.out.println("XXXXXXXX")
-        System.out.println(shellRule.shell[2])
+
         assertThat(shellRule.shell[0], containsString(/#!\/bin\/bash curl -I -X GET https:\/\/example.com\/sap\/opu\/odata\/sap\/MANAGE_GIT_REPOSITORY\/Pull -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Accept: application\/json' -H 'x-csrf-token: fetch' --cookie-jar cookieJar.txt | awk 'BEGIN {FS=": "}\/^x-csrf-token\/{print $2}'/))
         assertThat(shellRule.shell[1], containsString(/#!\/bin\/bash curl -X POST "https:\/\/example.com\/sap\/opu\/odata\/sap\/MANAGE_GIT_REPOSITORY\/Pull" -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Accept: application\/json' -H 'Content-Type: application\/json' -H 'x-csrf-token: TOKEN' --cookie cookieJar.txt -d '{ "sc_name": "Z_DEMO_DM" }'/))
         assertThat(shellRule.shell[2], containsString(/#!\/bin\/bash curl -X GET "https:\/\/example.com\/URI" -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Accept: application\/json'/))
