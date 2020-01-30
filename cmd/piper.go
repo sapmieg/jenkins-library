@@ -52,6 +52,7 @@ func Execute() {
 	rootCmd.AddCommand(GithubCreatePullRequestCommand())
 	rootCmd.AddCommand(AbapEnvironmentPullGitRepoCommand())
 	rootCmd.AddCommand(CheckmarxExecuteScanCommand())
+	rootCmd.AddCommand(CloudFoundryDeleteServiceCommand())
 
 	addRootFlags(rootCmd)
 	if err := rootCmd.Execute(); err != nil {

@@ -1,0 +1,72 @@
+metadata:
+  name: cloudFoundryDeleteService
+  description: DeleteCloudFoundryService
+  longDescription: |
+    Delete CloudFoundryService
+spec:
+  inputs:    
+    secrets:
+      - name: credentialsId
+        description: Jenkins credentials ID containing user and password to authenticate to the Cloud Platform ABAP Environment system or the Cloud Foundry API
+        type: jenkins
+    params:
+      - name: cfApiEndpoint
+        type: string
+        description: Login API
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+        aliases:
+          - name: cloudFoundry/apiEndpoint
+      - name: username
+        type: string
+        description: User E-Mail
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+      - name: password
+        type: string
+        description: User Password
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+      - name: cfOrg
+        type: string
+        description: CF org
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+        aliases:
+          - name: cloudFoundry/org
+      - name: cfSpace
+        type: string
+        description: CF Space
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+        aliases:
+          - name: cloudFoundry/space
+      - name: cfServiceInstance
+        type: string
+        description: Parameter to delete CloudFoundry Service
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+        aliases:
+          - name: cloudFoundry/serviceInstance
+  containers:
+    - name: cf
+      image: ppiper/cf-cli
+      imagePullPolicy: Never
