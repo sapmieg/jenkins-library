@@ -14,11 +14,11 @@ func TestCloudFoundryDeleteService2(t *testing.T) {
 		})*/
 	t.Run("CF Login: success case", func(t *testing.T) {
 		config := cloudFoundryDeleteServiceOptions{
-			API:          "https://api.endpoint.com",
-			Organisation: "testOrg",
-			Space:        "testSpace",
-			Username:     "testUser",
-			Password:     "testPassword",
+			CfAPIEndpoint: "https://api.endpoint.com",
+			CfOrg:         "testOrg",
+			CfSpace:       "testSpace",
+			Username:      "testUser",
+			Password:      "testPassword",
 		}
 		error := cloudFoundryLogin(config, &execRunner)
 		if error == nil {
