@@ -99,10 +99,6 @@ void call(Map parameters = [:]) {
             .mixinStepConfig(script.commonPipelineEnvironment, STEP_CONFIG_KEYS, CONFIG_KEY_COMPATIBILITY)
             .mixinStageConfig(script.commonPipelineEnvironment, parameters.stageName?:env.STAGE_NAME, STEP_CONFIG_KEYS, CONFIG_KEY_COMPATIBILITY)
             .mixin(parameters, PARAMETER_KEYS, CONFIG_KEY_COMPATIBILITY)
-            .withMandatoryProperty('cloudFoundry/org')
-            .withMandatoryProperty('cloudFoundry/space')
-            .withMandatoryProperty('cloudFoundry/credentialsId')
-            .withMandatoryProperty('cloudFoundry/serviceManifest')
             .use()
 
 
