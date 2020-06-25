@@ -1,3 +1,4 @@
+import com.sap.piper.Utils
 import com.cloudbees.groovy.cps.NonCPS
 import com.sap.piper.GenerateStageDocumentation
 import groovy.transform.Field
@@ -41,6 +42,9 @@ void call(Map parameters = [:]) {
                 cp piper ..
             '''
         }
+        def utils = new Utils()
+        utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
+
         abapEnvironmentPullGitRepo script: parameters.script
     }
 
