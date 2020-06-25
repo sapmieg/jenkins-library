@@ -40,5 +40,6 @@ void call(Map parameters = [:]) {
 
         //Config of Addon Pipeline
         script.commonPipelineEnvironment.setValue('addonRepositoryNames', ['Z_DEMO_DM_BRANCH'])
+        script.commonPipelineEnvironment.writeToDisk(script)
     }
 }
