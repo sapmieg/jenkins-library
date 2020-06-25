@@ -40,6 +40,9 @@ spec:
       - name: repositoryNames
         type: '[]string'
         description: Specifies a list of Repositories (Software Components) on the SAP Cloud Platform ABAP Environment system
+        resourceRef:
+          - name: commonPipelineEnvironment
+            param: addonRepositoryNames
         scope:
         - PARAMETERS
         - STAGES
