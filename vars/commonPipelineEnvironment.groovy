@@ -6,7 +6,7 @@ import groovy.json.JsonOutput
 
 class commonPipelineEnvironment implements Serializable {
 
-    def addonRepositoryNames
+    Map addonRepositoryNames
 
     //stores version of the artifact which is build during pipeline run
     def artifactVersion
