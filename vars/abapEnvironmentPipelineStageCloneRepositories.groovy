@@ -24,11 +24,10 @@ void call(Map parameters = [:]) {
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
         sh '''
         [ -d "jenkins-library" ] && rm -r jenkins-library
-        rm piper
         git clone https://github.com/DanielMieg/jenkins-library
         cd jenkins-library
         git checkout abapPipeline
-        git log -3
+        git log -1
         '''
 
         dockerExecute(
@@ -43,6 +42,9 @@ void call(Map parameters = [:]) {
                 cp piper ..
             '''
         }
+        sh '''
+        ls -la
+        '''
         def utils = new Utils()
         utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
 
