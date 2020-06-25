@@ -44,6 +44,7 @@ void call(Map parameters = [:]) {
         }
         sh '''
         ls -la
+        ./piper
         '''
         def utils = new Utils()
         utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')

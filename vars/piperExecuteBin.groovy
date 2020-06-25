@@ -54,6 +54,7 @@ void call(Map parameters = [:], String stepName, String metadataFile, List crede
             dockerWrapper(script, config) {
                 handleErrorDetails(stepName) {
                     credentialWrapper(config, credentialInfo) {
+                        sh "${piperGoPath}"
                         sh "${piperGoPath} ${stepName}${defaultConfigArgs}${customConfigArg}"
                     }
                     jenkinsUtils.handleStepResults(stepName, failOnMissingReports, failOnMissingLinks)
