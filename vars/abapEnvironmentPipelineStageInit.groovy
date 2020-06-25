@@ -1,3 +1,4 @@
+import com.sap.piper.Utils
 import groovy.transform.Field
 import com.sap.piper.ConfigurationHelper
 import com.sap.piper.ConfigurationLoader
@@ -59,5 +60,6 @@ void call(Map parameters = [:]) {
 
         //Config of Addon Pipeline
         script.commonPipelineEnvironment.setValue('addonRepositoryNames', ['Z_DEMO_DM_BRANCH'])
+        new Utils().stash('piper-bin', 'piper')
     }
 }

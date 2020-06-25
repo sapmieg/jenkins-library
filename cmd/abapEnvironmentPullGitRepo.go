@@ -47,6 +47,8 @@ func abapEnvironmentPullGitRepo(config abapEnvironmentPullGitRepoOptions, teleme
 	for _, repositoryName := range config.RepositoryNames {
 
 		log.Entry().Info("-------------------------")
+		log.Entry().Info("-----------NEW VERSION--------------")
+		log.Entry().Info("-------------------------")
 		log.Entry().Info("Start pulling " + repositoryName)
 		log.Entry().Info("-------------------------")
 
