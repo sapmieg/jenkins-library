@@ -40,8 +40,7 @@ void call(Map parameters = [:]) {
 
         //Config of Addon Pipeline
 
-        String[] repositories = []
-        repositories.add('Z_DEMO_DM_BRANCH')
+        def repositories = ['Z_DEMO_DM_BRANCH']
         script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         script.commonPipelineEnvironment.writeToDisk(script)
     }
