@@ -174,6 +174,7 @@ class commonPipelineEnvironment implements Serializable {
     }
 
     def files = [
+        [filename: '.pipeline/commonPipelineEnvironment/addonRepositoryNames', property: 'addonRepositoryNames'],
         [filename: '.pipeline/commonPipelineEnvironment/artifactVersion', property: 'artifactVersion'],
         [filename: '.pipeline/commonPipelineEnvironment/originalArtifactVersion', property: 'originalArtifactVersion'],
         [filename: '.pipeline/commonPipelineEnvironment/github/owner', property: 'githubOrg'],
