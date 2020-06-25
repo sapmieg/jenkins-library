@@ -36,5 +36,8 @@ void call(Map parameters = [:]) {
 
         //handling of stage and step activation
         piperInitRunStageConfiguration script: script, stageConfigResource: config.stageConfigResource
+
+        //Config of Addon Pipeline
+        script.commonPipelineEnvironment.setValue('addonRepositoryNames', ['Z_DEMO_DM'])
     }
 }

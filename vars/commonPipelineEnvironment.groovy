@@ -55,6 +55,9 @@ class commonPipelineEnvironment implements Serializable {
     String changeDocumentId
 
     def reset() {
+
+        addonRepositoryNames = [:]
+
         appContainerProperties = [:]
         artifactVersion = null
         originalArtifactVersion = null
