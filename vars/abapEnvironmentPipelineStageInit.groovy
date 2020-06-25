@@ -41,6 +41,7 @@ void call(Map parameters = [:]) {
         //Config of Addon Pipeline
 
         def repositories = ['Z_DEMO_DM_BRANCH']
+        assert repositories instanceof java.util.List
         script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         script.commonPipelineEnvironment.writeToDisk(script)
     }
