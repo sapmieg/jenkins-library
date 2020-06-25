@@ -21,26 +21,6 @@ void call(Map parameters = [:]) {
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false, ordinal: 1, telemetryDisabled: true) {
 
         checkout scm
-        sh '''
-        [ -d "jenkins-library" ] && rm -r jenkins-library
-        git clone https://github.com/DanielMieg/jenkins-library
-        cd jenkins-library
-        git checkout abapPipeline
-        git log -3
-        '''
-
-        dockerExecute(
-            script: script,
-            dockerImage: 'golang',
-            dockerEnvVars: [GOPATH: '/jenkinsdata/abapPipeline Test/workspace']
-        ) {
-            sh '''
-                cd jenkins-library
-                go build -o piper .
-                chmod +x piper
-                cp piper ..
-            '''
-        }
         setupCommonPipelineEnvironment script: script, customDefaults: parameters.customDefaults
 
         // load default & individual configuration
@@ -60,6 +40,5 @@ void call(Map parameters = [:]) {
 
         //Config of Addon Pipeline
         script.commonPipelineEnvironment.setValue('addonRepositoryNames', ['Z_DEMO_DM_BRANCH'])
-        new Utils().stash('piper-bin', 'piper')
     }
 }
