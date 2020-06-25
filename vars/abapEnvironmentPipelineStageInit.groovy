@@ -39,7 +39,8 @@ void call(Map parameters = [:]) {
         piperInitRunStageConfiguration script: script, stageConfigResource: config.stageConfigResource
 
         //Config of Addon Pipeline
-        script.commonPipelineEnvironment.setAddonRepositoryNames(['Z_DEMO_DM_BRANCH'])
+
+        script.commonPipelineEnvironment.setAddonRepositoryNames('[Z_DEMO_DM_BRANCH]')
         script.commonPipelineEnvironment.writeToDisk(script)
     }
 }

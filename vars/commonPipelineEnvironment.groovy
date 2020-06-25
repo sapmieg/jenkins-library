@@ -6,7 +6,7 @@ import groovy.json.JsonOutput
 
 class commonPipelineEnvironment implements Serializable {
 
-    def addonRepositoryNames
+    String addonRepositoryNames
 
     //stores version of the artifact which is build during pipeline run
     def artifactVersion
@@ -186,8 +186,7 @@ class commonPipelineEnvironment implements Serializable {
     ]
 
     void writeToDisk(script) {
-        System.out.println(getValue('addonRepositoryNames'))
-        System.out.println("Save file to disk")
+        echo "${getValue('addonRepositoryNames')}"
         files.each({f  ->
             if (this[f.property] && !script.fileExists(f.filename)) {
                 System.out.println("Try to save ${f.filename}")
