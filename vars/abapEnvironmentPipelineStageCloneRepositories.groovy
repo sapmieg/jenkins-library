@@ -24,6 +24,7 @@ void call(Map parameters = [:]) {
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
         sh '''
         [ -d "jenkins-library" ] && rm -r jenkins-library
+        rm piper
         git clone https://github.com/DanielMieg/jenkins-library
         cd jenkins-library
         git checkout abapPipeline
