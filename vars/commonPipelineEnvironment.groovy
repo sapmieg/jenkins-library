@@ -186,7 +186,7 @@ class commonPipelineEnvironment implements Serializable {
     ]
 
     void writeToDisk(script) {
-        echo "${getValue('addonRepositoryNames')}"
+        System.out.println("${getValue('addonRepositoryNames')}")
         files.each({f  ->
             if (this[f.property] && !script.fileExists(f.filename)) {
                 System.out.println("Try to save ${f.filename}")
