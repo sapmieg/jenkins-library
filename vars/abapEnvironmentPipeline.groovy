@@ -5,7 +5,30 @@ void call(parameters) {
             skipDefaultCheckout()
         }
         stages {
+            stage("GO build project"){
+                steps {
+                    sh '''
+                    [ -d "jenkins-library" ] && rm -r jenkins-library
+                    git clone https://github.com/DanielMieg/jenkins-library
+                    cd jenkins-library
+                    git checkout abapPipeline
+                    git log -3
+                    '''
 
+                    dockerExecute(
+                        script: this,
+                        dockerImage: 'golang',
+                        dockerEnvVars: [GOPATH: '/jenkinsdata/abapPipeline Test/workspace']
+                    ) {
+                        sh '''
+                            cd jenkins-library
+                            go build -o piper .
+                            chmod +x piper
+                            cp piper ..
+                        '''
+                    }
+                }
+            }
             stage('Init') {
                 steps {
                     abapEnvironmentPipelineStageInit script: parameters.script, customDefaults: ['com.sap.piper/pipeline/abapStageOrdinals.yml'].plus(parameters.customDefaults ?: [])
