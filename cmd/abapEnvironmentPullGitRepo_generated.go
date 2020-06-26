@@ -130,7 +130,7 @@ func abapEnvironmentPullGitRepoMetadata() config.StepData {
 					},
 					{
 						Name:        "repositoryNames",
-						ResourceRef: []config.ResourceReference{{Name: "commonPipelineEnvironment", Param: "addonRepositoryNames"}},
+						ResourceRef: []config.ResourceReference{{Name: "commonPipelineEnvironment", Param: "custom/addonRepositoryNames"}},
 						Scope:       []string{"PARAMETERS", "STAGES", "STEPS"},
 						Type:        "[]string",
 						Mandatory:   true,
