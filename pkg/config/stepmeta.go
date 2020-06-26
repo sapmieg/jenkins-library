@@ -353,7 +353,11 @@ func (m *StepData) GetResourceParameters(path, name string) map[string]interface
 		for _, res := range param.ResourceRef {
 			if res.Name == name {
 				if val := piperenv.GetParameter(filepath.Join(path, name), res.Param); len(val) > 0 {
-					resourceParams[param.Name] = val
+					if param.Type != "string" {
+						//unmarshall
+					} else {
+						resourceParams[param.Name] = val
+					}
 				}
 			}
 		}

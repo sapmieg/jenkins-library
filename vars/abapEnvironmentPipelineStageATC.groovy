@@ -18,7 +18,7 @@ import static com.sap.piper.Prerequisites.checkScript
 void call(Map parameters = [:]) {
     def script = checkScript(this, parameters) ?: this
     def stageName = parameters.stageName?:env.STAGE_NAME
-
+    input message: "Test"
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
         sh '''
         [ -d "jenkins-library" ] && rm -r jenkins-library
