@@ -43,7 +43,6 @@ void call(Map parameters = [:]) {
         // def repositories = ['Z_DEMO_DM_BRANCH']
         // assert repositories instanceof java.util.List
         // script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
-        script.commonPipelineEnvironment.setAddonAtcConfig('atcConfig.yml')
-        script.commonPipelineEnvironment.writeToDisk(script)
+        script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
     }
 }

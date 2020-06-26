@@ -6,8 +6,6 @@ import groovy.json.JsonOutput
 
 class commonPipelineEnvironment implements Serializable {
 
-    def addonRepositoryNames
-    String addonAtcConfig
 
     //stores version of the artifact which is build during pipeline run
     def artifactVersion
@@ -59,8 +57,7 @@ class commonPipelineEnvironment implements Serializable {
 
     def reset() {
 
-        addonRepositoryNames = [:]
-        addonAtcConfig = null
+
 
         appContainerProperties = [:]
         artifactVersion = null
@@ -176,8 +173,6 @@ class commonPipelineEnvironment implements Serializable {
     }
 
     def files = [
-        [filename: '.pipeline/commonPipelineEnvironment/addonRepositoryNames', property: 'addonRepositoryNames'],
-        [filename: '.pipeline/commonPipelineEnvironment/addonAtcConfig', property: 'addonAtcConfig'],
         [filename: '.pipeline/commonPipelineEnvironment/artifactVersion', property: 'artifactVersion'],
         [filename: '.pipeline/commonPipelineEnvironment/originalArtifactVersion', property: 'originalArtifactVersion'],
         [filename: '.pipeline/commonPipelineEnvironment/github/owner', property: 'githubOrg'],

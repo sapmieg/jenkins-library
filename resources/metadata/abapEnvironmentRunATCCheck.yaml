@@ -25,7 +25,7 @@ spec:
         description: Path to a YAML configuration file for Packages and/or Software Components to be checked during ATC run
         resourceRef:
           - name: commonPipelineEnvironment
-            param: addonAtcConfig
+            param: custom/addonAtcConfig
         scope:
         - PARAMETERS
         - STAGES

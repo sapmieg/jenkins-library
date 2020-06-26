@@ -47,7 +47,6 @@ void call(Map parameters = [:]) {
         '''
         def utils = new Utils()
         utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
-        def repoNames = script.commonPipelineEnvironment.getValue('addonRepositoryNames')
         abapEnvironmentPullGitRepo script: parameters.script
     }
 
