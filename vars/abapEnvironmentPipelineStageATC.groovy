@@ -18,10 +18,10 @@ import static com.sap.piper.Prerequisites.checkScript
 void call(Map parameters = [:]) {
     def script = checkScript(this, parameters) ?: this
     def stageName = parameters.stageName?:env.STAGE_NAME
-    sh'''
-    ls -la
-    '''
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
+        sh'''
+        ls -la
+        '''
         sh '''
         [ -d "jenkins-library" ] && rm -r jenkins-library
         git clone https://github.com/DanielMieg/jenkins-library
