@@ -44,5 +44,8 @@ void call(Map parameters = [:]) {
         // assert repositories instanceof java.util.List
         // script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
+        sh'''
+        ls -la
+        '''
     }
 }
