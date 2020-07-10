@@ -6,6 +6,7 @@ import groovy.json.JsonOutput
 
 class commonPipelineEnvironment implements Serializable {
 
+    String addonAtcConfig
 
     //stores version of the artifact which is build during pipeline run
     def artifactVersion
@@ -181,6 +182,7 @@ class commonPipelineEnvironment implements Serializable {
         [filename: '.pipeline/commonPipelineEnvironment/git/commitId', property: 'gitCommitId'],
         [filename: '.pipeline/commonPipelineEnvironment/git/commitMessage', property: 'gitCommitMessage'],
         [filename: '.pipeline/commonPipelineEnvironment/mtarFilePath', property: 'mtarFilePath'],
+        [filename: '.pipeline/commonPipelineEnvironment/addonAtcConfig', property: 'addonAtcConfig'],
     ]
 
     void writeToDisk(script) {
