@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	"github.com/SAP/jenkins-library/pkg/log"
 	"github.com/SAP/jenkins-library/pkg/piperenv"
 
 	"github.com/ghodss/yaml"
@@ -348,15 +349,18 @@ func (m *StepData) GetContextDefaults(stepName string) (io.ReadCloser, error) {
 // GetResourceParameters retrieves parameters from a named pipeline resource with a defined path
 func (m *StepData) GetResourceParameters(path, name string) map[string]interface{} {
 	resourceParams := map[string]interface{}{}
-
+	log.Entry().Info("---------------------------------------")
+	log.Entry().Info("GetResourceParameters")
 	for _, param := range m.Spec.Inputs.Parameters {
 		for _, res := range param.ResourceRef {
 			if res.Name == name {
+				log.Entry().Info("Name %v", name)
 				if val := piperenv.GetParameter(filepath.Join(path, name), res.Param); len(val) > 0 {
 					if param.Type != "string" {
 						//unmarshall
 					} else {
 						resourceParams[param.Name] = val
+						log.Entry().Info("Val %v", val)
 					}
 				}
 			}
