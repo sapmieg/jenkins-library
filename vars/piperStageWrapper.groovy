@@ -128,7 +128,7 @@ private void executeStage(script, originalStage, stageName, config, utils, telem
         ls -la
         '''
         utils.stashStageFiles(script, stageName)
-
+        input "Test"
         // In general telemetry reporting is disabled by the config settings. This flag is used to disable the reporting when the config is not yet read (e.g. init stage).
         if (!telemetryDisabled) {
             def duration = System.currentTimeMillis() - startTime
