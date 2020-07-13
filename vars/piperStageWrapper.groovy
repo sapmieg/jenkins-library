@@ -64,6 +64,12 @@ private void executeStage(script, originalStage, stageName, config, utils, telem
         // Add general stage stashes to config.stashContent
         config.stashContent = utils.unstashStageFiles(script, stageName, config.stashContent)
 
+        for (def content : config.stashContent ) {
+            echo content
+        }
+
+
+
         /* Defining the sources where to look for a project extension and a repository extension.
         * Files need to be named like the executed stage to be recognized.
         */
