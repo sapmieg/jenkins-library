@@ -45,8 +45,5 @@ void call(Map parameters = [:]) {
         // script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         //script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
         script.commonPipelineEnvironment.setAddonAtcConfig('atcConfig.yml')
-        sh'''
-        ls -la
-        '''
     }
 }
