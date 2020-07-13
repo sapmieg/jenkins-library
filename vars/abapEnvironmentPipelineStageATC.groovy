@@ -44,6 +44,9 @@ void call(Map parameters = [:]) {
         }
         sh '''
         ls -la
+        cd .pipeline
+        ls -la
+        cd ..
         '''
         abapEnvironmentRunATCCheck script: parameters.script
 
