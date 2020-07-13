@@ -124,10 +124,12 @@ private void executeStage(script, originalStage, stageName, config, utils, telem
     } finally {
         //Perform stashing of selected files in workspace
         echo "Stash stage files for ${stageName}"
-        sh'''
-        ls -la
-        '''
         utils.stashStageFiles(script, stageName)
+        sh'''
+            cd .pipeline
+            ls -la
+            cd ..
+        '''
         input "Test"
         // In general telemetry reporting is disabled by the config settings. This flag is used to disable the reporting when the config is not yet read (e.g. init stage).
         if (!telemetryDisabled) {
