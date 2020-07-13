@@ -18,7 +18,7 @@ import static com.sap.piper.Prerequisites.checkScript
 void call(Map parameters = [:]) {
     def script = checkScript(this, parameters) ?: this
     def stageName = parameters.stageName?:env.STAGE_NAME
-    piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
+    piperStageWrapper (script: script, stageName: stageName, stageLocking: false) {
         sh'''
         ls -la
         '''
