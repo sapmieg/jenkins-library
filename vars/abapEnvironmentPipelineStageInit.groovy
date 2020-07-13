@@ -49,6 +49,12 @@ void call(Map parameters = [:]) {
         echo "................................................"
         echo "${value}"
         echo "................................................"
-
+        sh'''
+            ls -la
+            cd .pipeline
+            ls -la
+            cd ..
+        '''
+        input "Test"
     }
 }
