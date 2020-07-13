@@ -126,6 +126,7 @@ private void executeStage(script, originalStage, stageName, config, utils, telem
         echo "Stash stage files for ${stageName}"
         utils.stashStageFiles(script, stageName)
         sh'''
+            ls -la
             cd .pipeline
             ls -la
             cd ..
