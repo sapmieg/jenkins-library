@@ -114,7 +114,7 @@ func abapEnvironmentRunATCCheckMetadata() config.StepData {
 				Parameters: []config.StepParameters{
 					{
 						Name:        "atcConfig",
-						ResourceRef: []config.ResourceReference{{Name: "commonPipelineEnvironment", Param: "atcConfig"}},
+						ResourceRef: []config.ResourceReference{{Name: "commonPipelineEnvironment", Param: "custom/atcConfig"}},
 						Scope:       []string{"PARAMETERS", "STAGES", "STEPS"},
 						Type:        "string",
 						Mandatory:   true,
