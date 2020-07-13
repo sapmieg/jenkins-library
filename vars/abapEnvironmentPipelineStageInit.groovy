@@ -55,6 +55,6 @@ void call(Map parameters = [:]) {
             ls -la
             cd ..
         '''
-        input "Test"
+
     }
 }
