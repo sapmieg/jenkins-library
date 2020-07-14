@@ -7,6 +7,7 @@ import groovy.json.JsonOutput
 class commonPipelineEnvironment implements Serializable {
 
     String abapAtcConfig
+    def abapRepositories = []
 
     //stores version of the artifact which is build during pipeline run
     def artifactVersion
@@ -59,6 +60,7 @@ class commonPipelineEnvironment implements Serializable {
     def reset() {
 
         abapAtcConfig = null
+        abapRepositories = []
 
         appContainerProperties = [:]
         artifactVersion = null
@@ -183,6 +185,7 @@ class commonPipelineEnvironment implements Serializable {
         [filename: '.pipeline/commonPipelineEnvironment/git/commitMessage', property: 'gitCommitMessage'],
         [filename: '.pipeline/commonPipelineEnvironment/mtarFilePath', property: 'mtarFilePath'],
         [filename: '.pipeline/commonPipelineEnvironment/abap/atcConfig', property: 'abapAtcConfig'],
+        [filename: '.pipeline/commonPipelineEnvironment/abap/repositoryNames', property: 'abapRepositories'],
     ]
 
     void writeToDisk(script) {
@@ -190,7 +193,11 @@ class commonPipelineEnvironment implements Serializable {
         files.each({f  ->
             if (this[f.property] && !script.fileExists(f.filename)) {
                 System.out.println("Try to save ${f.filename}")
-                script.writeFile file: f.filename, text: this[f.property]
+                if(this[f.property] instanceof String) {
+                    script.writeFile file: f.filename, text: this[f.property]
+                } else {
+                    script.writeFile file: fileName, text: groovy.json.JsonOutput.toJson(this[f.property])
+                }
             }
         })
         System.out.println("END Save file to disk")

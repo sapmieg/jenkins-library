@@ -40,9 +40,9 @@ void call(Map parameters = [:]) {
 
         //Config of Addon Pipeline
 
-        // def repositories = ['Z_DEMO_DM_BRANCH']
+        def repositories = ['Z_DEMO_DM_BRANCH']
+        script.commonPipelineEnvironment.setAbapRepositories(repositories)
         // assert repositories instanceof java.util.List
-        // script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         //script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
         // script.commonPipelineEnvironment.setValue('testParam','VALUE')
         // script.commonPipelineEnvironment.setValue('custom/testParam','VALUE')
