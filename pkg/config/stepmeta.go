@@ -2,6 +2,7 @@ package config
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -364,7 +365,13 @@ func (m *StepData) GetResourceParameters(path, name string) map[string]interface
 					log.Entry().Info("Value ", val)
 					if param.Type != "string" {
 						//unmarshall
-						resourceParams[param.Name] = val
+						byteValue := []byte(val)
+						var unmarshalledValue interface{}
+						err := json.Unmarshal(byteValue, &unmarshalledValue)
+						if err != nil {
+							log.Entry().Info("Unmarshal Error")
+						}
+						resourceParams[param.Name] = unmarshalledValue
 					} else {
 						resourceParams[param.Name] = val
 					}
