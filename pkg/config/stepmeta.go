@@ -364,6 +364,7 @@ func (m *StepData) GetResourceParameters(path, name string) map[string]interface
 					log.Entry().Info("Value ", val)
 					if param.Type != "string" {
 						//unmarshall
+						resourceParams[param.Name] = val
 					} else {
 						resourceParams[param.Name] = val
 					}
