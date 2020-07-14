@@ -196,7 +196,7 @@ class commonPipelineEnvironment implements Serializable {
                 if(this[f.property] instanceof String) {
                     script.writeFile file: f.filename, text: this[f.property]
                 } else {
-                    script.writeFile file: filename, text: groovy.json.JsonOutput.toJson(this[f.property])
+                    script.writeFile file: f.filename, text: groovy.json.JsonOutput.toJson(this[f.property])
                 }
             }
         })
