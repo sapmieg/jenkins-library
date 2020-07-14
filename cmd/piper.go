@@ -125,7 +125,6 @@ func PrepareConfig(cmd *cobra.Command, metadata *config.StepData, stepName strin
 
 	log.Entry().Info("...............................")
 	resourceParams := metadata.GetResourceParameters(GeneralConfig.EnvRootPath, "commonPipelineEnvironment")
-	log.Entry().Fatal("Resource Params: %v", resourceParams)
 	log.Entry().Info("...............................")
 
 	flagValues := config.AvailableFlagValues(cmd, &filters)

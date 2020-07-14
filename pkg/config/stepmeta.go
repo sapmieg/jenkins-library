@@ -356,11 +356,12 @@ func (m *StepData) GetResourceParameters(path, name string) map[string]interface
 			if res.Name == name {
 				log.Entry().Info("Name ", name)
 				if val := piperenv.GetParameter(filepath.Join(path, name), res.Param); len(val) > 0 {
+					log.Entry().Info("Type ", param.Type)
+					log.Entry().Info("Value ", val)
 					if param.Type != "string" {
 						//unmarshall
 					} else {
 						resourceParams[param.Name] = val
-						log.Entry().Info("Val ", val)
 					}
 				}
 			}
