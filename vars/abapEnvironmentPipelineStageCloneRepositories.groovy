@@ -9,7 +9,7 @@ import static com.sap.piper.Prerequisites.checkScript
 @Field Set GENERAL_CONFIG_KEYS = []
 @Field STAGE_STEP_KEYS = [
     /** Pulls Software Components / Git repositories into the ABAP Environment instance */
-    'abapEnvironmentPullGitRepo'
+    'abapEnvironmentPullGitRepo',
     'testAbap'
 ]
 @Field Set STEP_CONFIG_KEYS = GENERAL_CONFIG_KEYS.plus(STAGE_STEP_KEYS)
@@ -49,7 +49,7 @@ void call(Map parameters = [:]) {
         def utils = new Utils()
         utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
 
-        // testAbap script: parameters.script
+        testAbap script: parameters.script
         abapEnvironmentPullGitRepo script: parameters.script
     }
 
