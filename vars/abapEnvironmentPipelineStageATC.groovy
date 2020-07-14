@@ -1,4 +1,5 @@
 import com.cloudbees.groovy.cps.NonCPS
+import com.sap.piper.Utils
 import com.sap.piper.GenerateStageDocumentation
 import groovy.transform.Field
 
