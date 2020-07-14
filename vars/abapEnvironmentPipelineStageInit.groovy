@@ -46,8 +46,9 @@ void call(Map parameters = [:]) {
         //script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
         // script.commonPipelineEnvironment.setValue('testParam','VALUE')
         // script.commonPipelineEnvironment.setValue('custom/testParam','VALUE')
-        script.commonPipelineEnvironment.setValue('custom/atcConfig','atcConfig.yml')
-        script.commonPipelineEnvironment.setValue('atcConfig','atcConfig.yml')
+        // script.commonPipelineEnvironment.setValue('custom/atcConfig','atcConfig.yml')
+        // script.commonPipelineEnvironment.setValue('atcConfig','atcConfig.yml')
+        script.commonPipelineEnvironment.setAbapAtcConfig('atcConfig.yml')
         echo "................................................"
         sh'''
             ls -la
