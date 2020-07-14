@@ -49,7 +49,7 @@ void call(Map parameters = [:]) {
         def utils = new Utils()
         utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
 
-        testAbap script: parameters.script
+        // testAbap script: parameters.script
         abapEnvironmentPullGitRepo script: parameters.script
     }
 
