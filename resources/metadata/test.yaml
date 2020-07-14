@@ -1,0 +1,42 @@
+metadata:
+  name: testAbap
+  description: Test
+  longDescription: |
+    Test
+
+spec:
+  inputs:
+    secrets:
+      - name: abapCredentialsId
+        aliases:
+          - name: cfCredentialsId
+        description: Jenkins credentials ID containing user and password to authenticate to the Cloud Platform ABAP Environment system or the Cloud Foundry API
+        type: jenkins
+    params:
+      - name: testParam
+        type: string
+        description: Test
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+        resourceRef:
+          - name: testParam
+            param: custom/testParam
+      - name: username
+        type: string
+        description: User or E-Mail for CF
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true
+      - name: password
+        type: string
+        description: User Password for CF User
+        scope:
+        - PARAMETERS
+        - STAGES
+        - STEPS
+        mandatory: true

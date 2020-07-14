@@ -89,6 +89,7 @@ func Execute() {
 	rootCmd.AddCommand(MalwareExecuteScanCommand())
 	rootCmd.AddCommand(GctsCloneRepositoryCommand())
 	rootCmd.AddCommand(JsonApplyPatchCommand())
+	rootCmd.AddCommand(TestAbapCommand())
 
 	addRootFlags(rootCmd)
 	if err := rootCmd.Execute(); err != nil {

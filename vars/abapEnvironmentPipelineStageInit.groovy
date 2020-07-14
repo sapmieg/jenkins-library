@@ -44,10 +44,9 @@ void call(Map parameters = [:]) {
         // assert repositories instanceof java.util.List
         // script.commonPipelineEnvironment.setAddonRepositoryNames(repositories)
         //script.commonPipelineEnvironment.setValue('addonAtcConfig','atcConfig.yml')
-        script.commonPipelineEnvironment.setValue('atcConfig','atcConfig.yml')
-        def value = script.commonPipelineEnvironment.getValue('atcConfig')
-        echo "................................................"
-        echo "${value}"
+        script.commonPipelineEnvironment.setValue('testParam','VALUE')
+        script.commonPipelineEnvironment.setValue('custom/testParam','VALUE')
+        def value = script.commonPipelineEnvironment.getValue('testParam')
         echo "................................................"
         sh'''
             ls -la

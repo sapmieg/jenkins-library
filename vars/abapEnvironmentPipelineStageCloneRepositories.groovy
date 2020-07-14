@@ -10,6 +10,7 @@ import static com.sap.piper.Prerequisites.checkScript
 @Field STAGE_STEP_KEYS = [
     /** Pulls Software Components / Git repositories into the ABAP Environment instance */
     'abapEnvironmentPullGitRepo'
+    'testAbap'
 ]
 @Field Set STEP_CONFIG_KEYS = GENERAL_CONFIG_KEYS.plus(STAGE_STEP_KEYS)
 @Field Set PARAMETER_KEYS = STEP_CONFIG_KEYS
@@ -22,31 +23,33 @@ void call(Map parameters = [:]) {
     def stageName = parameters.stageName?:env.STAGE_NAME
 
     piperStageWrapper (script: script, stageName: stageName, stashContent: [], stageLocking: false) {
-        // sh '''
-        // [ -d "jenkins-library" ] && rm -r jenkins-library
-        // git clone https://github.com/DanielMieg/jenkins-library
-        // cd jenkins-library
-        // git checkout abapPipeline
-        // git log -1
-        // '''
+        sh '''
+        [ -d "jenkins-library" ] && rm -r jenkins-library
+        git clone https://github.com/DanielMieg/jenkins-library
+        cd jenkins-library
+        git checkout abapPipeline
+        git log -1
+        '''
 
-        // dockerExecute(
-        //     script: script,
-        //     dockerImage: 'golang',
-        //     dockerEnvVars: [GOPATH: '/jenkinsdata/abapPipeline Test/workspace']
-        // ) {
-        //     sh '''
-        //         cd jenkins-library
-        //         go build -o piper .
-        //         chmod +x piper
-        //         cp piper ..
-        //     '''
-        // }
-        // sh '''
-        // ls -la
-        // '''
-        // def utils = new Utils()
-        // utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
+        dockerExecute(
+            script: script,
+            dockerImage: 'golang',
+            dockerEnvVars: [GOPATH: '/jenkinsdata/abapPipeline Test/workspace']
+        ) {
+            sh '''
+                cd jenkins-library
+                go build -o piper .
+                chmod +x piper
+                cp piper ..
+            '''
+        }
+        sh '''
+        ls -la
+        '''
+        def utils = new Utils()
+        utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
+
+        testAbap script: parameters.script
         abapEnvironmentPullGitRepo script: parameters.script
     }
 

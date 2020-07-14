@@ -28,9 +28,6 @@ void call(Map parameters = [:]) {
         .use()
 
     piperStageWrapper (script: script, stageName: stageName, stageLocking: false) {
-        sh'''
-        ls -la
-        '''
         sh '''
         [ -d "jenkins-library" ] && rm -r jenkins-library
         git clone https://github.com/DanielMieg/jenkins-library
