@@ -365,11 +365,10 @@ func (m *StepData) GetResourceParameters(path, name string) map[string]interface
 					log.Entry().Info("Value ", val)
 					if param.Type != "string" {
 						//unmarshall
-						byteValue := []byte(val)
 						var unmarshalledValue interface{}
-						err := json.Unmarshal(byteValue, &unmarshalledValue)
+						err := json.Unmarshal([]byte(val), &unmarshalledValue)
 						if err != nil {
-							log.Entry().Info("Unmarshal Error")
+							log.Entry().Debugf("Failed to unmarshal: %v", val)
 						}
 						resourceParams[param.Name] = unmarshalledValue
 					} else {
