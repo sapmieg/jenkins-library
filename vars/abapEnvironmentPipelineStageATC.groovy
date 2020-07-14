@@ -50,10 +50,10 @@ void call(Map parameters = [:]) {
         }
         sh '''
         ls -la
-        cd .pipeline
-        ls -la
-        cd ..
         '''
+        def utils = new Utils()
+        utils.stashWithMessage('piper-bin', 'failed to stash piper binary', 'piper')
+
         abapEnvironmentRunATCCheck script: parameters.script
 
     }
