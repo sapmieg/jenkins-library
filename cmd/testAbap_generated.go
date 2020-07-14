@@ -15,6 +15,8 @@ import (
 
 type testAbapOptions struct {
 	TestParam string `json:"testParam,omitempty"`
+	Username  string `json:"username,omitempty"`
+	Password  string `json:"password,omitempty"`
 }
 
 // TestAbapCommand Test
@@ -73,8 +75,12 @@ func TestAbapCommand() *cobra.Command {
 
 func addTestAbapFlags(cmd *cobra.Command, stepConfig *testAbapOptions) {
 	cmd.Flags().StringVar(&stepConfig.TestParam, "testParam", os.Getenv("PIPER_testParam"), "Test")
+	cmd.Flags().StringVar(&stepConfig.Username, "username", os.Getenv("PIPER_username"), "User or E-Mail for CF")
+	cmd.Flags().StringVar(&stepConfig.Password, "password", os.Getenv("PIPER_password"), "User Password for CF User")
 
 	cmd.MarkFlagRequired("testParam")
+	cmd.MarkFlagRequired("username")
+	cmd.MarkFlagRequired("password")
 }
 
 // retrieve step metadata
@@ -90,6 +96,22 @@ func testAbapMetadata() config.StepData {
 					{
 						Name:        "testParam",
 						ResourceRef: []config.ResourceReference{{Name: "testParam", Param: "custom/testParam"}},
+						Scope:       []string{"PARAMETERS", "STAGES", "STEPS"},
+						Type:        "string",
+						Mandatory:   true,
+						Aliases:     []config.Alias{},
+					},
+					{
+						Name:        "username",
+						ResourceRef: []config.ResourceReference{},
+						Scope:       []string{"PARAMETERS", "STAGES", "STEPS"},
+						Type:        "string",
+						Mandatory:   true,
+						Aliases:     []config.Alias{},
+					},
+					{
+						Name:        "password",
+						ResourceRef: []config.ResourceReference{},
 						Scope:       []string{"PARAMETERS", "STAGES", "STEPS"},
 						Type:        "string",
 						Mandatory:   true,
