@@ -38,6 +38,8 @@ type RequestMock struct {
 
 // SendRequest for ClientMock
 func (c *ClientMock) SendRequest(method, url string, body io.Reader, header http.Header, cookies []*http.Cookie) (*http.Response, error) {
+
+	// TODO Order of incoming requests
 	for _, request := range c.MockedRequests {
 		if url == request.URL && method == request.Method {
 			expectedBody, _ := ioutil.ReadAll(request.Body)

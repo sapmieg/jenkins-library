@@ -8,45 +8,46 @@ import (
 
 	"github.com/SAP/jenkins-library/pkg/abaputils"
 	"github.com/SAP/jenkins-library/pkg/mock"
+	"github.com/pkg/errors"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestStep(t *testing.T) {
-	// t.Run("Run Step Successful", func(t *testing.T) {
+// func TestStep(t *testing.T) {
+// 	t.Run("Run Step Successful", func(t *testing.T) {
 
-	// 	var autils = abaputils.AUtilsMock{}
-	// 	defer autils.Cleanup()
-	// 	autils.ReturnedConnectionDetailsHTTP.Password = "password"
-	// 	autils.ReturnedConnectionDetailsHTTP.User = "user"
-	// 	autils.ReturnedConnectionDetailsHTTP.URL = "https://example.com"
-	// 	autils.ReturnedConnectionDetailsHTTP.XCsrfToken = "xcsrftoken"
+// 		var autils = abaputils.AUtilsMock{}
+// 		defer autils.Cleanup()
+// 		autils.ReturnedConnectionDetailsHTTP.Password = "password"
+// 		autils.ReturnedConnectionDetailsHTTP.User = "user"
+// 		autils.ReturnedConnectionDetailsHTTP.URL = "https://example.com"
+// 		autils.ReturnedConnectionDetailsHTTP.XCsrfToken = "xcsrftoken"
 
-	// 	config := abapEnvironmentPullGitRepoOptions{
-	// 		CfAPIEndpoint:     "https://api.endpoint.com",
-	// 		CfOrg:             "testOrg",
-	// 		CfSpace:           "testSpace",
-	// 		CfServiceInstance: "testInstance",
-	// 		CfServiceKeyName:  "testServiceKey",
-	// 		Username:          "testUser",
-	// 		Password:          "testPassword",
-	// 		RepositoryNames:   []string{"testRepo1"},
-	// 	}
+// 		config := abapEnvironmentPullGitRepoOptions{
+// 			CfAPIEndpoint:     "https://api.endpoint.com",
+// 			CfOrg:             "testOrg",
+// 			CfSpace:           "testSpace",
+// 			CfServiceInstance: "testInstance",
+// 			CfServiceKeyName:  "testServiceKey",
+// 			Username:          "testUser",
+// 			Password:          "testPassword",
+// 			RepositoryNames:   []string{"testRepo1"},
+// 		}
 
-	// 	client := &clientMock{
-	// 		BodyList: []string{
-	// 			`{"d" : { "status" : "S" } }`,
-	// 			`{"d" : { "status" : "S" } }`,
-	// 			`{"d" : { "status" : "S" } }`,
-	// 		},
-	// 		Token:      "myToken",
-	// 		StatusCode: 200,
-	// 	}
+// 		client := &clientMock{
+// 			BodyList: []string{
+// 				`{"d" : { "status" : "S" } }`,
+// 				`{"d" : { "status" : "S" } }`,
+// 				`{"d" : { "status" : "S" } }`,
+// 			},
+// 			Token:      "myToken",
+// 			StatusCode: 200,
+// 		}
 
-	// 	err := runAbapEnvironmentPullGitRepo(&config, nil, &autils, client)
-	// 	assert.NoError(t, err, "Did not expect error")
-	// })
-}
+// 		err := runAbapEnvironmentPullGitRepo(&config, nil, &autils, client)
+// 		assert.NoError(t, err, "Did not expect error")
+// 	})
+// }
 
 func TestTriggerPull(t *testing.T) {
 
@@ -115,38 +116,53 @@ func TestTriggerPull(t *testing.T) {
 		assert.Equal(t, tokenExpected, entityConnection.XCsrfToken)
 	})
 
-	// t.Run("Test trigger pull: ABAP Error", func(t *testing.T) {
+	t.Run("Test trigger pull: ABAP Error", func(t *testing.T) {
 
-	// 	errorMessage := "ABAP Error Message"
-	// 	errorCode := "ERROR/001"
-	// 	HTTPErrorMessage := "HTTP Error Message"
-	// 	combinedErrorMessage := "HTTP Error Message: ERROR/001 - ABAP Error Message"
+		errorMessage := "ABAP Error Message"
+		errorCode := "ERROR/001"
+		HTTPErrorMessage := "HTTP Error Message"
+		combinedErrorMessage := "HTTP Error Message: ERROR/001 - ABAP Error Message"
 
-	// 	client := &clientMock{
-	// 		Body:       `{"error" : { "code" : "` + errorCode + `", "message" : { "lang" : "en", "value" : "` + errorMessage + `" } } }`,
-	// 		Token:      "myToken",
-	// 		StatusCode: 400,
-	// 		Error:      errors.New(HTTPErrorMessage),
-	// 	}
-	// 	config := abapEnvironmentPullGitRepoOptions{
-	// 		CfAPIEndpoint:     "https://api.endpoint.com",
-	// 		CfOrg:             "testOrg",
-	// 		CfSpace:           "testSpace",
-	// 		CfServiceInstance: "testInstance",
-	// 		CfServiceKeyName:  "testServiceKey",
-	// 		Username:          "testUser",
-	// 		Password:          "testPassword",
-	// 		RepositoryNames:   []string{"testRepo1", "testRepo2"},
-	// 	}
+		con := abaputils.ConnectionDetailsHTTP{
+			User:     "MY_USER",
+			Password: "MY_PW",
+			URL:      "https://api.endpoint.com/Entity/",
+		}
 
-	// 	con := abaputils.ConnectionDetailsHTTP{
-	// 		User:     "MY_USER",
-	// 		Password: "MY_PW",
-	// 		URL:      "https://api.endpoint.com/Entity/",
-	// 	}
-	// 	_, err := triggerPull(config.RepositoryNames[0], con, client)
-	// 	assert.Equal(t, combinedErrorMessage, err.Error(), "Different error message expected")
-	// })
+		requestMockHead := mock.RequestMock{
+			URL:    con.URL,
+			Method: "HEAD",
+			Body:   bytes.NewBuffer([]byte("")),
+			Response: http.Response{
+				StatusCode: 400,
+				Status:     HTTPErrorMessage,
+				Header:     nil,
+				Body:       ioutil.NopCloser(bytes.NewReader([]byte(`{"error" : { "code" : "` + errorCode + `", "message" : { "lang" : "en", "value" : "` + errorMessage + `" } } }`))),
+			},
+			Err: errors.New(HTTPErrorMessage),
+		}
+
+		config := abapEnvironmentPullGitRepoOptions{
+			CfAPIEndpoint:     "https://api.endpoint.com",
+			CfOrg:             "testOrg",
+			CfSpace:           "testSpace",
+			CfServiceInstance: "testInstance",
+			CfServiceKeyName:  "testServiceKey",
+			Username:          "testUser",
+			Password:          "testPassword",
+			RepositoryNames:   []string{"testRepo1", "testRepo2"},
+		}
+
+		requestMockList := make([]mock.RequestMock, 0)
+		requestMockList = append(requestMockList, requestMockHead)
+
+		client := &mock.ClientMock{
+			MockedRequests: requestMockList,
+		}
+
+		_, err := triggerPull(config.RepositoryNames[0], con, client)
+		assert.Equal(t, combinedErrorMessage, err.Error(), "Different error message expected")
+	})
 
 }
 
