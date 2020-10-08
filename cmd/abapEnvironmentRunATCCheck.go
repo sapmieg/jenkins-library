@@ -237,7 +237,7 @@ func fetchXcsrfToken(requestType string, details abaputils.ConnectionDetailsHTTP
 	defer req.Body.Close()
 
 	// workaround until golang version 1.16 is used
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Second)
 
 	token := req.Header.Get("X-Csrf-Token")
 	return token, err
