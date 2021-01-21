@@ -23,6 +23,7 @@ void call(parameters) {
                 when {expression {return parameters.script.commonPipelineEnvironment.configuration.runStage?.get(env.STAGE_NAME)}}
                 steps {
                     abapEnvironmentPipelineStagePrepareSystem script: parameters.script
+                    checkpoint 'System Created'
                 }
             }
 
