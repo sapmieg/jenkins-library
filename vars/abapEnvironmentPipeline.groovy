@@ -28,7 +28,9 @@ void call(parameters) {
 
             stage('Checkpoint') {
                 agent none
-                checkpoint 'System Created'
+                steps{
+                    checkpoint 'System Created'
+                }
             }
 
             stage('Clone Repositories') {
