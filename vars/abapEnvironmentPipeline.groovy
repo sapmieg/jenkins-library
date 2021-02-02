@@ -20,6 +20,7 @@ void call(parameters) {
             }
 
             stage('Prepare System') {
+                agent none
                 when {expression {return parameters.script.commonPipelineEnvironment.configuration.runStage?.get(env.STAGE_NAME)}}
                 steps {
                     abapEnvironmentPipelineStagePrepareSystem script: parameters.script
