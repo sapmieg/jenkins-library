@@ -20,12 +20,15 @@ void call(parameters) {
             }
 
             stage('Prepare System') {
-                agent none
                 when {expression {return parameters.script.commonPipelineEnvironment.configuration.runStage?.get(env.STAGE_NAME)}}
                 steps {
                     abapEnvironmentPipelineStagePrepareSystem script: parameters.script
-                    checkpoint 'System Created'
                 }
+            }
+
+            stage('Checkpoint') {
+                agent none
+                checkpoint 'System Created'
             }
 
             stage('Clone Repositories') {
