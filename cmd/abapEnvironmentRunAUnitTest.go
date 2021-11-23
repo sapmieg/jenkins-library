@@ -268,25 +268,25 @@ func buildAUnitObjectSetString(AUnitConfig AUnitConfig) (objectSetString string)
 	for _, s := range AUnitConfig.ObjectSet {
 		//Write object set
 		objectSetString += `<osl:objectSet xsi:type="` + s.Type + `" xmlns:osl="http://www.sap.com/api/osl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">`
-		for _, t := range s.Set {
-			objectSetString += `<osl:set xsi:type="` + t.Type + `">`
-			if t.Type == "multiPropertySet" {
-				for _, multiPropertyPackage := range t.MultiPropertySet.Packages {
-					objectSetString += `<osl:package name="` + multiPropertyPackage.Name + `"/>`
-				}
-				for _, softwareComponent := range t.MultiPropertySet.SoftwareComponents {
-					objectSetString += `<osl:softwareComponent name="` + softwareComponent.Name + `"/>`
-				}
+		if s.Type == "multiPropertySet" {
+			for _, multiPropertyPackage := range s.MultiPropertySet.Packages {
+				objectSetString += `<osl:package name="` + multiPropertyPackage.Name + `"/>`
+			}
+			for _, softwareComponent := range s.MultiPropertySet.SoftwareComponents {
+				objectSetString += `<osl:softwareComponent name="` + softwareComponent.Name + `"/>`
+			}
 
-			} else {
+		} else {
+			for _, t := range s.Set {
+				objectSetString += `<osl:set xsi:type="` + t.Type + `">`
 				for _, packageSet := range t.PackageSet {
 					objectSetString += `<osl:package name="` + packageSet.Name + `" includeSubpackages="` + fmt.Sprintf("%v", *packageSet.IncludeSubpackages) + `"/>`
 				}
 				for _, flatObjectSet := range t.FlatObjectSet {
 					objectSetString += `<osl:object name="` + flatObjectSet.Name + `" type="` + fmt.Sprintf("%v", *&flatObjectSet.Type) + `"/>`
 				}
+				objectSetString += `</osl:set>`
 			}
-			objectSetString += `</osl:set>`
 
 		}
 
@@ -457,17 +457,17 @@ type Duration struct {
 
 //ObjectSet in form of packages and software components to be checked
 type ObjectSet struct {
-	Type string `json:"type,omitempty"`
-	Set  []Set  `json:"set,omitempty"`
+	Type             string           `json:"type,omitempty"`
+	Set              []Set            `json:"set,omitempty"`
+	MultiPropertySet MultiPropertySet `json:"multiPropertySet,omitempty"`
 }
 
 //Set in form of packages and software components to be checked
 type Set struct {
 	//Set  []Set  `json:"set,omitempty"`
-	Type             string           `json:"type,omitempty"`
-	PackageSet       []AUnitPackage   `json:"package,omitempty"`
-	FlatObjectSet    []AUnitObject    `json:"object,omitempty"`
-	MultiPropertySet MultiPropertySet `json:"multiPropertySet,omitempty"`
+	Type          string         `json:"type,omitempty"`
+	PackageSet    []AUnitPackage `json:"package,omitempty"`
+	FlatObjectSet []AUnitObject  `json:"object,omitempty"`
 	/*FlatSet       []FlatObjectSet `json:"flatobjectset,omitempty"`
 	ObjectTypeSet []ObjectTypeSet `json:"objecttypeset,omitempty"`
 	ComponentSet  []ComponentSet  `json:"componentset,omitempty"`

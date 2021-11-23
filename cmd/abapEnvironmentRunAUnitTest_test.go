@@ -110,7 +110,7 @@ func TestBuildAUnitTestBody(t *testing.T) {
 
 		expectedmetadataString := `<aunit:run title="Test Title" context="Test Context" xmlns:aunit="http://www.sap.com/adt/api/aunit">`
 		expectedoptionsString := `<aunit:options><aunit:measurements type="none"/><aunit:scope ownTests="false" foreignTests="false"/><aunit:riskLevel harmless="false" dangerous="false" critical="false"/><aunit:duration short="false" medium="false" long="false"/></aunit:options>`
-		expectedobjectSetString := `<osl:objectSet xsi:type="multiPropertySet" xmlns:osl="http://www.sap.com/api/osl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><osl:set xsi:type="multiPropertySet"><osl:package name="AUnitPackage"/><osl:package name="AUnitPackage2"/><osl:softwareComponent name="mySWC"/><osl:softwareComponent name="mySWC2"/></osl:set></osl:objectSet>`
+		expectedobjectSetString := `<osl:objectSet xsi:type="multiPropertySet" xmlns:osl="http://www.sap.com/api/osl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><osl:package name="AUnitPackage"/><osl:package name="AUnitPackage2"/><osl:softwareComponent name="mySWC"/><osl:softwareComponent name="mySWC2"/></osl:objectSet>`
 
 		var err error
 		var config AUnitConfig
@@ -137,27 +137,25 @@ func TestBuildAUnitTestBody(t *testing.T) {
 			},
 			ObjectSet: []ObjectSet{{
 				Type: "multiPropertySet",
-				Set: []Set{{
-					Type: "multiPropertySet",
-					MultiPropertySet: MultiPropertySet{
-						[]AUnitPackage{
-							{
-								Name:               "AUnitPackage",
-								IncludeSubpackages: new(bool),
-							},
-							{
-								Name:               "AUnitPackage2",
-								IncludeSubpackages: new(bool),
-							}},
-						[]AUnitSoftwareComponent{
-							{
-								Name: "mySWC",
-							},
-							{
-								Name: "mySWC2",
-							}},
-					},
-				}},
+
+				MultiPropertySet: MultiPropertySet{
+					[]AUnitPackage{
+						{
+							Name:               "AUnitPackage",
+							IncludeSubpackages: new(bool),
+						},
+						{
+							Name:               "AUnitPackage2",
+							IncludeSubpackages: new(bool),
+						}},
+					[]AUnitSoftwareComponent{
+						{
+							Name: "mySWC",
+						},
+						{
+							Name: "mySWC2",
+						}},
+				},
 			}},
 		}
 
