@@ -270,13 +270,24 @@ func buildAUnitObjectSetString(AUnitConfig AUnitConfig) (objectSetString string)
 		objectSetString += `<osl:objectSet xsi:type="` + s.Type + `" xmlns:osl="http://www.sap.com/api/osl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">`
 		for _, t := range s.Set {
 			objectSetString += `<osl:set xsi:type="` + t.Type + `">`
-			for _, packageSet := range t.PackageSet {
-				objectSetString += `<osl:package name="` + packageSet.Name + `" includeSubpackages="` + fmt.Sprintf("%v", *packageSet.IncludeSubpackages) + `"/>`
-			}
-			for _, flatObjectSet := range t.FlatObjectSet {
-				objectSetString += `<osl:object name="` + flatObjectSet.Name + `" type="` + fmt.Sprintf("%v", *&flatObjectSet.Type) + `"/>`
+			if t.Type == "multiPropertySet" {
+				for _, multiPropertyPackage := range t.MultiPropertySet.Packages {
+					objectSetString += `<osl:package name="` + multiPropertyPackage.Name + `"/>`
+				}
+				for _, softwareComponent := range t.MultiPropertySet.SoftwareComponents {
+					objectSetString += `<osl:softwareComponent name="` + softwareComponent.Name + `"/>`
+				}
+
+			} else {
+				for _, packageSet := range t.PackageSet {
+					objectSetString += `<osl:package name="` + packageSet.Name + `" includeSubpackages="` + fmt.Sprintf("%v", *packageSet.IncludeSubpackages) + `"/>`
+				}
+				for _, flatObjectSet := range t.FlatObjectSet {
+					objectSetString += `<osl:object name="` + flatObjectSet.Name + `" type="` + fmt.Sprintf("%v", *&flatObjectSet.Type) + `"/>`
+				}
 			}
 			objectSetString += `</osl:set>`
+
 		}
 
 		objectSetString += `</osl:objectSet>`
@@ -453,13 +464,27 @@ type ObjectSet struct {
 //Set in form of packages and software components to be checked
 type Set struct {
 	//Set  []Set  `json:"set,omitempty"`
-	Type          string         `json:"type,omitempty"`
-	PackageSet    []AUnitPackage `json:"package,omitempty"`
-	FlatObjectSet []AUnitObject  `json:"object,omitempty"`
+	Type             string           `json:"type,omitempty"`
+	PackageSet       []AUnitPackage   `json:"package,omitempty"`
+	FlatObjectSet    []AUnitObject    `json:"object,omitempty"`
+	MultiPropertySet MultiPropertySet `json:"multiPropertySet,omitempty"`
 	/*FlatSet       []FlatObjectSet `json:"flatobjectset,omitempty"`
 	ObjectTypeSet []ObjectTypeSet `json:"objecttypeset,omitempty"`
 	ComponentSet  []ComponentSet  `json:"componentset,omitempty"`
 	TransportSet  []TransportSet  `json:"transportset,omitempty"`*/
+}
+
+type MultiPropertySet struct {
+	Packages           []AUnitPackage           `json:"package,omitempty"`
+	SoftwareComponents []AUnitSoftwareComponent `json:"softwareComponent,omitempty"`
+}
+
+type AUnitSoftwareComponent struct {
+	Name string `json:"name,omitempty"`
+}
+
+type AUnitMultiPropertyPackage struct {
+	Name string `json:"name,omitempty"`
 }
 
 //AUnitPackage in form of packages and software components to be checked
