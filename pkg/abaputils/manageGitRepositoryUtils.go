@@ -109,6 +109,16 @@ func printLog(logOverviewEntry LogResultsV2, api SoftwareComponentApiInterface) 
 	// 		break
 	// 	}
 	// }
+
+	result, err := api.GetExecutionLog()
+
+	if err != nil {
+		return
+	}
+
+	for _, logLine := range result.Value {
+		log.Entry().Infof(logLine.Descr)
+	}
 }
 
 func printLogProtocolEntries(logEntry LogResultsV2, logProtocols []LogProtocol) {

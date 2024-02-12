@@ -183,6 +183,39 @@ func (api *SAP_COM_0948) GetLogOverview() (result []LogResultsV2, err error) {
 
 }
 
+func (api *SAP_COM_0948) GetExecutionLog() (result ExecutionLogResults, err error) {
+	connectionDetails := api.con
+	connectionDetails.URL = api.con.URL + api.path + api.actionsEntity + "/" + api.getUUID() + "/_Execution_log"
+	resp, err := GetHTTPResponse("GET", connectionDetails, nil, api.client)
+	if err != nil {
+		log.SetErrorCategory(log.ErrorInfrastructure)
+		_, err = HandleHTTPError(resp, err, api.failureMessage, connectionDetails)
+		return ExecutionLogResults{}, err
+	}
+	defer resp.Body.Close()
+
+	// Parse response
+	var abapResp map[string]*json.RawMessage
+	bodyText, _ := io.ReadAll(resp.Body)
+
+	marshallError := json.Unmarshal(bodyText, &abapResp)
+	if marshallError != nil {
+		return ExecutionLogResults{}, errors.Wrap(marshallError, "Could not parse response from the ABAP Environment system")
+	}
+	marshallError = json.Unmarshal(*abapResp["value"], &result)
+	if marshallError != nil {
+		return ExecutionLogResults{}, errors.Wrap(marshallError, "Could not parse response from the ABAP Environment system")
+	}
+
+	if reflect.DeepEqual(LogResultsV2{}, result) {
+		log.Entry().WithField("StatusCode", resp.Status).Error(api.failureMessage)
+		log.SetErrorCategory(log.ErrorInfrastructure)
+		var err = errors.New("Request to ABAP System not successful")
+		return ExecutionLogResults{}, err
+	}
+	return result, nil
+}
+
 func (api *SAP_COM_0948) GetAction() (string, error) {
 
 	connectionDetails := api.con

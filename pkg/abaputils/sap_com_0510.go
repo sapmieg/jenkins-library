@@ -35,6 +35,10 @@ type SAP_COM_0510 struct {
 	retryAllowedErrorCodes []string
 }
 
+func (api *SAP_COM_0510) GetExecutionLog() (result ExecutionLogResults, err error) {
+	return result, nil
+}
+
 func (api *SAP_COM_0510) init(con ConnectionDetailsHTTP, client piperhttp.Sender, repo Repository) {
 	api.con = con
 	api.client = client

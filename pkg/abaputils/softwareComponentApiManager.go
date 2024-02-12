@@ -66,6 +66,7 @@ type SoftwareComponentApiInterface interface {
 	GetAction() (string, error)
 	GetLogOverview() ([]LogResultsV2, error)
 	GetLogProtocol(LogResultsV2, int) (result []LogProtocol, count int, err error)
+	GetExecutionLog() (result ExecutionLogResults, err error)
 	CreateTag(tag Tag) error
 }
 
@@ -146,6 +147,15 @@ type LogResultsV2 struct {
 	Status        string              `json:"type_of_found_issues"`
 	Timestamp     string              `json:"timestamp"`
 	ToLogProtocol LogProtocolDeferred `json:"to_Log_Protocol"`
+}
+
+type ExecutionLogResults struct {
+	Value []ExecLogValue `json:"value"`
+}
+
+type ExecLogValue struct {
+	IndexNo int    `json:"index_no"`
+	Descr   string `json:"descr"`
 }
 
 type LogProtocolDeferred struct {
