@@ -99,16 +99,16 @@ func printDashedLine(i int) {
 
 func printLog(logOverviewEntry LogResultsV2, api SoftwareComponentApiInterface) {
 
-	page := 0
+	// page := 0
 	printHeader(logOverviewEntry)
-	for {
-		logProtocols, count, err := api.GetLogProtocol(logOverviewEntry, page)
-		printLogProtocolEntries(logOverviewEntry, logProtocols)
-		page += 1
-		if allLogsHaveBeenPrinted(logProtocols, page, count, err) {
-			break
-		}
-	}
+	// for {
+	// 	logProtocols, count, err := api.GetLogProtocol(logOverviewEntry, page)
+	// 	printLogProtocolEntries(logOverviewEntry, logProtocols)
+	// 	page += 1
+	// 	if allLogsHaveBeenPrinted(logProtocols, page, count, err) {
+	// 		break
+	// 	}
+	// }
 }
 
 func printLogProtocolEntries(logEntry LogResultsV2, logProtocols []LogProtocol) {

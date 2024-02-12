@@ -56,10 +56,10 @@ func runAbapEnvironmentCloneGitRepo(config *abapEnvironmentCloneGitRepoOptions, 
 	log.Entry().Infof("Start cloning %v repositories", len(repositories))
 	for _, repo := range repositories {
 
-		cloneError := cloneSingleRepo(apiManager, connectionDetails, repo, config, com)
-		if cloneError != nil {
-			return cloneError
-		}
+		cloneSingleRepo(apiManager, connectionDetails, repo, config, com)
+		// if cloneError != nil {
+		// 	return cloneError
+		// }
 	}
 	abaputils.AddDefaultDashedLine(1)
 	log.Entry().Info("All repositories were cloned successfully")
